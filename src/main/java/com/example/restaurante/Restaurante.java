@@ -1,6 +1,7 @@
 package com.example.restaurante;
 
 import com.example.restaurante.modelo.Conexion;
+import com.example.restaurante.pruebas.Pruebas;
 import com.example.restaurante.vistas.CRUDCategorias;
 import com.example.restaurante.vistas.pCat;
 import com.example.restaurante.vistas.vCategorias;
@@ -27,11 +28,12 @@ public class Restaurante extends Application {
     private HBox hbox, hHerramientas;
     private VBox vbox;
     private BorderPane bdpPrincipal;
-    private Button btnCategorias, btnClientes, btnSalir, btnGestionCategorias, btnGestionProductos;
+    private Button btnCategorias, btnClientes, btnSalir, btnGestionCategorias, btnGestionProductos,btnPruebas;
     private Label lblNombre;
 
     @Override
     public void start(Stage stage) {
+        new Pruebas.FileChooserExample();
         conectarDB();
         CrearGUI();
         Scene scene = new Scene(bdpPrincipal, 1280, 720);
@@ -54,6 +56,9 @@ public class Restaurante extends Application {
 
         bdpPrincipal.setTop(lblNombre);
 
+        btnPruebas = new Button("Prueba");
+        btnPruebas.setOnAction(e -> new Pruebas());
+
         btnCategorias = createButton("Categorías", "/imagenes/categoria.png");
         btnCategorias.setOnAction(e -> new pCat());
 
@@ -74,7 +79,7 @@ public class Restaurante extends Application {
         hbox.setAlignment(Pos.CENTER);
         hbox.setSpacing(50);
 
-        hHerramientas = new HBox(btnGestionCategorias, btnGestionProductos, btnSalir);
+        hHerramientas = new HBox(btnGestionCategorias, btnGestionProductos, btnSalir, btnPruebas);
         hHerramientas.setAlignment(Pos.CENTER);
         hHerramientas.setSpacing(30);
 
