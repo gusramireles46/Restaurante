@@ -1,5 +1,7 @@
 package com.example.restaurante.pruebas;
 
+import com.example.restaurante.modelo.catDB;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
@@ -27,13 +29,13 @@ public class Pruebas {
             conexion.commit();
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(catDB.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try {
                 ps.close();
                 fis.close();
             } catch (Exception ex) {
-                Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(catDB.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return false;
