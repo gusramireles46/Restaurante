@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class HelloApplication extends Application {
+public class Restaurante extends Application {
 
     private HBox hbox;
     private BorderPane bdpPrincipal;
