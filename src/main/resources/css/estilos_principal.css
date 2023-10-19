@@ -1,0 +1,16 @@
+.root {
+    -fx-background-image: url("../imagenes/background.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover; /* Opcional, ajusta el tamaño de la imagen de fondo */
+}
+
+.texto-boton {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
