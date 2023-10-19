@@ -1,5 +1,6 @@
 package com.example.restaurante;
 
+import com.example.restaurante.vistas.vCategorias;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
