@@ -1,6 +1,7 @@
 package com.example.restaurante;
 
 import com.example.restaurante.modelo.Conexion;
+import com.example.restaurante.vistas.CRUDCategorias;
 import com.example.restaurante.vistas.pCat;
 import com.example.restaurante.vistas.vCategorias;
 import javafx.application.Application;
@@ -23,9 +24,10 @@ import java.util.Optional;
 
 public class Restaurante extends Application {
 
-    private HBox hbox;
+    private HBox hbox, hHerramientas;
+    private VBox vbox;
     private BorderPane bdpPrincipal;
-    private Button btnCategorias, btnClientes, btnSalir;
+    private Button btnCategorias, btnClientes, btnSalir, btnGestionCategorias, btnGestionProductos;
     private Label lblNombre;
 
     @Override
@@ -57,14 +59,30 @@ public class Restaurante extends Application {
 
         btnClientes = createButton("Clientes", "/imagenes/clientes.png");
 
+        btnGestionCategorias = createButton("Gestionar Categorías", "/imagenes/gestionCategorias.png");
+        btnGestionCategorias.setOnAction(e -> new CRUDCategorias());
+
+        btnGestionProductos = createButton("Gestionar Productos", "/imagenes/gestionProductos.png");
+        btnGestionProductos.setOnAction(e -> {
+            System.out.println("Gestion de productos");
+        });
+
         btnSalir = createButton("Salir", "/imagenes/salida.png");
         btnSalir.setOnAction(e -> salir());
 
-        hbox = new HBox(btnCategorias, btnClientes, btnSalir);
+        hbox = new HBox(btnCategorias, btnClientes);
         hbox.setAlignment(Pos.CENTER);
         hbox.setSpacing(50);
 
-        bdpPrincipal.setCenter(hbox);
+        hHerramientas = new HBox(btnGestionCategorias, btnGestionProductos, btnSalir);
+        hHerramientas.setAlignment(Pos.CENTER);
+        hHerramientas.setSpacing(30);
+
+        vbox = new VBox(hbox, hHerramientas);
+        vbox.setSpacing(25);
+        vbox.setAlignment(Pos.CENTER);
+
+        bdpPrincipal.setCenter(vbox);
         bdpPrincipal.setPadding(new Insets(10));
     }
 
