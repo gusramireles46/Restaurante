@@ -7,7 +7,7 @@ public class Conexion{
     private static String server = "127.0.0.1";
     private static String user = "topicos";
     private static String pass = "1234567890";
-    private static String db = "cdg";
+    private static String db = "coladegato";
 
     public static Connection conexion;
     public static void createConnection(){

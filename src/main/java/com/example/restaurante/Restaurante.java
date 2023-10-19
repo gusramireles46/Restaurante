@@ -1,5 +1,7 @@
 package com.example.restaurante;
 
+import com.example.restaurante.modelo.Conexion;
+import com.example.restaurante.vistas.pCat;
 import com.example.restaurante.vistas.vCategorias;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -28,6 +30,7 @@ public class Restaurante extends Application {
 
     @Override
     public void start(Stage stage) {
+        conectarDB();
         CrearGUI();
         Scene scene = new Scene(bdpPrincipal, 1280, 720);
         scene.getStylesheets().add(getClass().getResource("/css/estilos_principal.css").toExternalForm());
@@ -36,15 +39,21 @@ public class Restaurante extends Application {
         stage.show();
     }
 
+    public void conectarDB() {
+        Conexion.createConnection();
+        System.out.println("Conexion establecida");
+    }
+
     private void CrearGUI() {
         bdpPrincipal = new BorderPane();
 
-        lblNombre = new Label("Nombre del restaurante");
+        lblNombre = new Label("Cola de gato");
         lblNombre.getStyleClass().add("title");
 
         bdpPrincipal.setTop(lblNombre);
 
         btnCategorias = createButton("Categorías", "/imagenes/categoria.png");
+        btnCategorias.setOnAction(e -> new pCat());
 
         btnClientes = createButton("Clientes", "/imagenes/clientes.png");
 

@@ -6,5 +6,6 @@ module com.example.restaurante {
 
 
     opens com.example.restaurante to javafx.fxml;
+    opens com.example.restaurante.modelo to javafx.base;
     exports com.example.restaurante;
 }

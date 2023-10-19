@@ -1,46 +1,67 @@
 package com.example.restaurante.vistas;
 
-import com.example.restaurante.componentes.btnCell;
-import com.example.restaurante.modelo.catDB;
-import com.example.tap2023.componentes.ButtonCell;
-import com.example.tap2023.modelos.CategoriasDAO;
-import javafx.beans.property.Property;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
+import com.example.restaurante.modelo.CategoriaDB;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import org.kordamp.bootstrapfx.BootstrapFX;
-import org.kordamp.bootstrapfx.scene.layout.Panel;
+
+import java.util.ArrayList;
 
 public class pCat extends Stage {
+
     private VBox vBox;
-    private TableView<catDB> tbvCategorias;
+    private TableView<CategoriaDB> tbvCategorias;
     private Button btnAgregar;
-    private catDB categoriasDAO;
-    public Restaurante(){
+    private CategoriaDB categoriasDAO;
+    private Scene escena;
+    private GridPane gdpCat;
+
+    public pCat() {
         CrearUI();
-
-
+        escena = new Scene(vBox, 480, 320);
+        this.setTitle("Categorías");
+        this.setScene(escena);
+        this.show();
     }
-    private void CrearUI(){
-        categoriasDAO = new catDB();
+
+    private void CrearUI() {
+        categoriasDAO = new CategoriaDB();
         tbvCategorias = new TableView<>();
-        CreateTable();
+        //CreateTable();
+        crearGrid();
         btnAgregar = new Button("Agregar");
-        btnAgregar.getStyleClass().setAll("btn","btn-success");
-        btnAgregar.setOnAction(event -> new vCategorias(tbvCategorias,  null));
-        vBox = new VBox(tbvCategorias, btnAgregar);
+        btnAgregar.setOnAction(event -> new vCategorias(tbvCategorias, null));
+        vBox = new VBox(gdpCat, btnAgregar);
     }
-    private void CreateTable(){
+
+    private void crearGrid() {
+        categoriasDAO = new CategoriaDB();
+        gdpCat = new GridPane();
+
+        // Obtén los datos de la base de datos en un ObservableList
+        ObservableList<CategoriaDB> categorias = categoriasDAO.listarCategorias();
+
+        int row = 0;
+        int col = 0;
+
+        // Recorre la lista de categorías y crea botones en el GridPane
+        for (CategoriaDB categoria : categorias) {
+            Button categoriaButton = new Button(categoria.getNom_Categoria());
+            // Agrega un manejador de evento para el botón si es necesario
+            gdpCat.add(categoriaButton, col, row);
+            col++;
+            if (col >= 3) {
+                col = 0;
+                row++;
+            }
+        }
+
+    }
+    /*private void CreateTable(){
         TableColumn<catDB, Integer> tbcIdCategoria = new TableColumn<>("ID");
         tbcIdCategoria.setCellValueFactory(new PropertyValueFactory<>("id_Categoria"));
 
@@ -66,5 +87,5 @@ public class pCat extends Stage {
         tbvCategorias.getColumns().addAll(tbcIdCategoria, tbcNomCategoria, tbcEditar, tbcEliminar);
         tbvCategorias.setItems(categoriasDAO.listarCategorias());
 
-    }
+    }*/
 }

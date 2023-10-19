@@ -1,16 +1,16 @@
 package com.example.restaurante.componentes;
 
-import com.example.restaurante.modelo.catDB;
+import com.example.restaurante.modelo.CategoriaDB;
 import com.example.restaurante.vistas.vCategorias;
 import javafx.scene.control.*;
 
 import java.util.Optional;
 
-public class btnCell extends TableCell<catDB, String> {
+public class btnCell extends TableCell<CategoriaDB, String> {
     private Button btnCelda;
     private int opc;
-    private TableView<catDB> tbvCategorias;
-    private catDB objCat;
+    private TableView<CategoriaDB> tbvCategorias;
+    private CategoriaDB objCat;
     public btnCell(int opc){
         this.opc = opc;
 

@@ -1,17 +1,12 @@
 package com.example.restaurante.vistas;
 
-import com.example.restaurante.modelo.catDB;
+import com.example.restaurante.modelo.CategoriaDB;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class vCategorias extends Stage {
@@ -19,11 +14,11 @@ public class vCategorias extends Stage {
     private HBox hBox;
     private TextField txtNameCat;
     private Button btnGuardar;
-    private catDB catdb;
-    TableView<catDB> tbvCategorias;
-    public vCategorias(TableView<catDB> tbvCat, catDB catdb){
+    private CategoriaDB catdb;
+    TableView<CategoriaDB> tbvCategorias;
+    public vCategorias(TableView<CategoriaDB> tbvCat, CategoriaDB catdb){
         this.tbvCategorias = tbvCat;
-        this.catdb = catdb == null ? new catDB() : catdb;
+        this.catdb = catdb == null ? new CategoriaDB() : catdb;
         CrearUI();
         escena = new Scene(hBox);
         this.setTitle("Categorias");
@@ -31,7 +26,7 @@ public class vCategorias extends Stage {
         this.show();
     }
     private void CrearUI(){
-        catdb = new catDB();
+        catdb = new CategoriaDB();
         txtNameCat = new TextField();
         txtNameCat.setText(catdb.getNom_Categoria());
         txtNameCat.setPromptText("Nombre de la Categoria");
@@ -45,8 +40,6 @@ public class vCategorias extends Stage {
         catdb.setNom_Categoria(txtNameCat.getText());
         if(catdb.getId_Categoria() > 0)
             catdb.actualizar();
-        else
-            catdb.insertar();
         catdb.insertar();
         tbvCategorias.setItems(catdb.listarCategorias());
         tbvCategorias.refresh();

@@ -1,13 +1,10 @@
 package com.example.restaurante.pruebas;
 
-import com.example.restaurante.modelo.catDB;
+import com.example.restaurante.modelo.CategoriaDB;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,13 +26,13 @@ public class Pruebas {
             conexion.commit();
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(catDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CategoriaDB.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try {
                 ps.close();
                 fis.close();
             } catch (Exception ex) {
-                Logger.getLogger(catDB.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CategoriaDB.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return false;
