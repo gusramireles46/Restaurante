@@ -40,7 +40,6 @@ public class Restaurante extends Application {
 
     public void conectarDB() {
         Conexion.createConnection();
-        System.out.println("Conexion establecida");
     }
 
     private void CrearGUI() {
