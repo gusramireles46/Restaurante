@@ -45,8 +45,9 @@ public class Restaurante extends Application {
     private void CrearGUI() {
         bdpPrincipal = new BorderPane();
 
-        lblNombre = new Label("Cola de gato");
+        lblNombre = new Label("Restaurante Cola de Gato");
         lblNombre.getStyleClass().add("title");
+
 
         bdpPrincipal.setTop(lblNombre);
 
