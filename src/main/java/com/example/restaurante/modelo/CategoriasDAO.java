@@ -89,4 +89,22 @@ public class CategoriasDAO {
         }
         return cat;
     }
+
+    public void getById() {
+        String query = "SELECT * FROM categorias WHERE id_categoria = " + id_categoria;
+        try {
+            Statement stmt = Conexion.conexion.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            if (res.next()) {
+                nom_categoria = res.getString("nom_categoria");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return id_categoria + ". " + nom_categoria;
+    }
 }

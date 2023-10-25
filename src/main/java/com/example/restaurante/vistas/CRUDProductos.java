@@ -43,7 +43,7 @@ public class CRUDProductos extends Stage {
         btnAgregar = new Button("Agregar producto");
         //btnAgregar.getStyleClass().addAll("btn", "btn-success");
         btnAgregar.getStyleClass().add("add-button");
-        btnAgregar.setOnAction(e -> {});
+        btnAgregar.setOnAction(e -> new frmProductos(tbvProductos, null));
         vbox = new VBox(title, tbvProductos, btnAgregar);
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(25);
