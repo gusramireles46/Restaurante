@@ -1,10 +1,6 @@
 package com.example.restaurante;
 
 import com.example.restaurante.modelo.Conexion;
-import com.example.restaurante.pruebas.Pruebas;
-import com.example.restaurante.vistas.CRUDCategorias;
-import com.example.restaurante.vistas.pCat;
-import com.example.restaurante.vistas.vCategorias;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -28,12 +24,11 @@ public class Restaurante extends Application {
     private HBox hbox, hHerramientas;
     private VBox vbox;
     private BorderPane bdpPrincipal;
-    private Button btnCategorias, btnClientes, btnSalir, btnGestionCategorias, btnGestionProductos,btnPruebas;
+    private Button btnCategorias, btnSalir, btnGestionCategorias, btnGestionProductos;
     private Label lblNombre;
 
     @Override
     public void start(Stage stage) {
-        new Pruebas.FileChooserExample();
         conectarDB();
         CrearGUI();
         Scene scene = new Scene(bdpPrincipal, 1280, 720);
@@ -56,30 +51,23 @@ public class Restaurante extends Application {
 
         bdpPrincipal.setTop(lblNombre);
 
-        btnPruebas = new Button("Prueba");
-        btnPruebas.setOnAction(e -> new Pruebas());
-
         btnCategorias = createButton("Categorías", "/imagenes/categoria.png");
-        btnCategorias.setOnAction(e -> new pCat());
-
-        btnClientes = createButton("Clientes", "/imagenes/clientes.png");
 
         btnGestionCategorias = createButton("Gestionar Categorías", "/imagenes/gestionCategorias.png");
-        btnGestionCategorias.setOnAction(e -> new CRUDCategorias());
+        btnGestionCategorias.setPrefWidth(250);
 
         btnGestionProductos = createButton("Gestionar Productos", "/imagenes/gestionProductos.png");
-        btnGestionProductos.setOnAction(e -> {
-            System.out.println("Gestion de productos");
-        });
+        btnGestionProductos.setPrefWidth(250);
 
         btnSalir = createButton("Salir", "/imagenes/salida.png");
         btnSalir.setOnAction(e -> salir());
+        btnSalir.setPrefWidth(250);
 
-        hbox = new HBox(btnCategorias, btnClientes);
+        hbox = new HBox(btnCategorias);
         hbox.setAlignment(Pos.CENTER);
         hbox.setSpacing(50);
 
-        hHerramientas = new HBox(btnGestionCategorias, btnGestionProductos, btnSalir, btnPruebas);
+        hHerramientas = new HBox(btnGestionCategorias, btnGestionProductos, btnSalir);
         hHerramientas.setAlignment(Pos.CENTER);
         hHerramientas.setSpacing(30);
 

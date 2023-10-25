@@ -1,11 +1,8 @@
-drop
-database if exists coladegato;
+drop database if exists coladegato;
 
-create
-database coladegato;
+create database coladegato;
 
-use
-coladegato;
+use coladegato;
 
 CREATE TABLE categorias
 (
@@ -29,7 +26,7 @@ CREATE TABLE productos
     imagen_producto blob,
     id_categoria    int,
     CONSTRAINT pk_prod PRIMARY KEY (id_productos),
-    foreign key (id_categoria) references categorias (id_categoria)
+    CONSTRAINT fk_cat FOREIGN KEY (id_categoria) references categorias (id_categoria)
 );
 
 CREATE TABLE ticket
@@ -39,7 +36,7 @@ CREATE TABLE ticket
     fecha_creacion datetime,
     total          decimal(10, 2),
     CONSTRAINT pk_ticket PRIMARY KEY (id_ticket),
-    FOREIGN KEY (id_cliente) REFERENCES clientes (id_clientes)
+    CONSTRAINT fk_cliente FOREIGN KEY (id_cliente) REFERENCES clientes (id_clientes)
 );
 
 CREATE TABLE detalle_ticket
@@ -50,6 +47,6 @@ CREATE TABLE detalle_ticket
     cantidad        int,
     precio_unitario decimal(10, 2),
     CONSTRAINT pk_detalle PRIMARY KEY (id_detalle),
-    FOREIGN KEY (id_ticket) REFERENCES ticket (id_ticket),
-    FOREIGN KEY (id_producto) REFERENCES productos (id_productos)
+    CONSTRAINT fk_ticket FOREIGN KEY (id_ticket) REFERENCES ticket (id_ticket),
+    CONSTRAINT fk_prod FOREIGN KEY (id_producto) REFERENCES productos (id_productos)
 );
