@@ -1,18 +1,17 @@
 package com.example.restaurante.vistas;
 
+import com.example.restaurante.componentes.ProductosButton;
 import com.example.restaurante.modelo.CategoriasDAO;
 import com.example.restaurante.modelo.ProductosDAO;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.kordamp.bootstrapfx.BootstrapFX;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
 
@@ -62,8 +61,24 @@ public class CRUDProductos extends Stage {
 
         TableColumn<ProductosDAO, String> tbcCategoria = nombreIdCategoria();
 
+        TableColumn<ProductosDAO, String> tbcEliminar = new TableColumn<>("Eliminar");
+        tbcEliminar.setCellFactory(new Callback<TableColumn<ProductosDAO, String>, TableCell<ProductosDAO, String>>() {
+            @Override
+            public TableCell<ProductosDAO, String> call(TableColumn<ProductosDAO, String> productosDAOStringTableColumn) {
+                return new ProductosButton(1);
+            }
+        });
 
-        tbvProductos.getColumns().addAll(tbcIdProducto, tbcNombreProducto, tbcPrecioProducto, tbcCategoria);
+        TableColumn<ProductosDAO, String> tbcModificar = new TableColumn<>("Modificar");
+        tbcModificar.setCellFactory(new Callback<TableColumn<ProductosDAO, String>, TableCell<ProductosDAO, String>>() {
+            @Override
+            public TableCell<ProductosDAO, String> call(TableColumn<ProductosDAO, String> productosDAOStringTableColumn) {
+                return new ProductosButton(2);
+            }
+        });
+
+
+        tbvProductos.getColumns().addAll(tbcIdProducto, tbcNombreProducto, tbcPrecioProducto, tbcCategoria, tbcModificar, tbcEliminar);
         tbvProductos.setItems(productosDAO.listarProductos());
     }
 

@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -31,18 +30,24 @@ public class frmProductos extends Stage {
 
     private void crearGUI() {
         txfNombre = new TextField();
+        txfNombre.setText(productosDAO.getNombre());
         txfNombre.setPromptText("Nombre del producto");
         txfNombre.setFocusTraversable(false);
         txfPrecio = new TextField();
+        txfPrecio.setText(String.valueOf(productosDAO.getPrecio()));
         txfPrecio.setPromptText("Precio del producto");
         txfPrecio.setFocusTraversable(false);
 
         cbxCategoria = new ComboBox<>();
+        CategoriasDAO categoriasDAO = new CategoriasDAO();
+        categoriasDAO.setId_Categoria(productosDAO.getId_categoria());
+        categoriasDAO.getById();
         ObservableList<CategoriasDAO> categorias = new CategoriasDAO().listarCategorias();
         cbxCategoria.setItems(categorias);
         if (!categorias.isEmpty()) {
             cbxCategoria.setValue(categorias.get(0));
         }
+        cbxCategoria.setValue(categoriasDAO);
 
 
         btnGuardar = new Button("Guardar producto");
