@@ -33,7 +33,7 @@ public class Restaurante extends Application {
         CrearGUI();
         Scene scene = new Scene(bdpPrincipal, 1280, 720);
         scene.getStylesheets().add(getClass().getResource("/css/estilos_principal.css").toExternalForm());
-        stage.setTitle("Cola de Gato");
+        stage.setTitle("Restaurante Cola de Gato");
         stage.setScene(scene);
         stage.show();
     }
