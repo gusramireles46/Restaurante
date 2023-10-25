@@ -2,6 +2,7 @@ package com.example.restaurante;
 
 import com.example.restaurante.modelo.Conexion;
 import com.example.restaurante.vistas.CRUDProductos;
+import com.example.restaurante.vistas.Productos;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -65,11 +66,14 @@ public class Restaurante extends Application {
         btnSalir.setOnAction(e -> salir());
         btnSalir.setPrefWidth(250);
 
+        Button btnProductos = new Button("Productos");
+        btnProductos.setOnAction(e -> new Productos());
+
         hbox = new HBox(btnCategorias);
         hbox.setAlignment(Pos.CENTER);
         hbox.setSpacing(50);
 
-        hHerramientas = new HBox(btnGestionCategorias, btnGestionProductos, btnSalir);
+        hHerramientas = new HBox(btnGestionCategorias, btnGestionProductos, btnSalir, btnProductos);
         hHerramientas.setAlignment(Pos.CENTER);
         hHerramientas.setSpacing(30);
 

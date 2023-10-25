@@ -44,10 +44,10 @@ public class frmProductos extends Stage {
         categoriasDAO.getById();
         ObservableList<CategoriasDAO> categorias = new CategoriasDAO().listarCategorias();
         cbxCategoria.setItems(categorias);
+        cbxCategoria.setValue(categoriasDAO);
         if (!categorias.isEmpty()) {
             cbxCategoria.setValue(categorias.get(0));
         }
-        cbxCategoria.setValue(categoriasDAO);
 
 
         btnGuardar = new Button("Guardar producto");
