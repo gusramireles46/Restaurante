@@ -5,10 +5,7 @@ import com.example.restaurante.modelo.ProductosDAO;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -57,5 +54,28 @@ public class frmProductos extends Stage {
     }
 
     private void guardarProducto() {
+        try {
+            productosDAO.setNombre(txfNombre.getText());
+            double precio = Double.parseDouble(txfPrecio.getText());
+            productosDAO.setPrecio(precio);
+
+            CategoriasDAO catTemp = cbxCategoria.getValue();
+            productosDAO.setId_categoria(catTemp.getId_Categoria());
+
+            if (productosDAO.getId_producto() > 0)
+                productosDAO.actualizarProducto();
+            else
+                productosDAO.insertarProducto();
+            tbvProductos.setItems(productosDAO.listarProductos());
+            tbvProductos.refresh();
+
+            this.close();
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Mensaje del sistema");
+            alert.setHeaderText("Error en los datos");
+            alert.setContentText("Por favor ingrese sólo valores válidos (Precio: #.##).");
+            alert.showAndWait();
+        }
     }
 }
