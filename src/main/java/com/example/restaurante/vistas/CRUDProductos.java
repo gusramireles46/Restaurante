@@ -30,7 +30,6 @@ public class CRUDProductos extends Stage {
 
     private void crearGUI() {
         productosDAO = new ProductosDAO();
-        categoriasDAO = new CategoriasDAO();
         tbvProductos = new TableView<>();
         crearTabla();
         btnAgregar = new Button("Agregar producto");
@@ -48,13 +47,22 @@ public class CRUDProductos extends Stage {
         TableColumn<ProductosDAO, Double> tbcPrecioProducto = new TableColumn<>("Precio");
         tbcPrecioProducto.setCellValueFactory(new PropertyValueFactory<>("precio"));
 
-        TableColumn<ProductosDAO, String> tbcCategoria = new TableColumn<>("Categoría");
-        tbcCategoria.setCellValueFactory(new PropertyValueFactory<>("id_categoria"));
-
+        TableColumn<ProductosDAO, String> tbcCategoria = nombreIdCategoria();
 
 
         tbvProductos.getColumns().addAll(tbcIdProducto, tbcNombreProducto, tbcPrecioProducto, tbcCategoria);
         tbvProductos.setItems(productosDAO.listarProductos());
+    }
+
+    private TableColumn<ProductosDAO, String> nombreIdCategoria() {
+        TableColumn<ProductosDAO, String> tbcCategoria = new TableColumn<>("Categoría");
+        tbcCategoria.setCellValueFactory(cellData -> {
+            categoriasDAO = new CategoriasDAO();
+            int id_categoria = cellData.getValue().getId_categoria();
+            CategoriasDAO categoria = categoriasDAO.getById(id_categoria);
+            return new SimpleStringProperty(categoria.getNom_Categoria());
+        });
+        return tbcCategoria;
     }
 
 }

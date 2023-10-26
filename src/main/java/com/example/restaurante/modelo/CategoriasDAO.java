@@ -76,7 +76,6 @@ public class CategoriasDAO {
     }
 
     public CategoriasDAO getById(int idCategoria) {
-        //String nombreCategoria = "";
         CategoriasDAO cat = new CategoriasDAO();
         String query = "SELECT nom_categoria FROM categorias WHERE id_categoria = " + idCategoria;
         try {
