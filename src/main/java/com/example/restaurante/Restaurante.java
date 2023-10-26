@@ -1,6 +1,7 @@
 package com.example.restaurante;
 
 import com.example.restaurante.modelo.Conexion;
+import com.example.restaurante.vistas.CRUDProductos;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -58,6 +59,7 @@ public class Restaurante extends Application {
 
         btnGestionProductos = createButton("Gestionar Productos", "/imagenes/gestionProductos.png");
         btnGestionProductos.setPrefWidth(250);
+        btnGestionProductos.setOnAction(e -> new CRUDProductos());
 
         btnSalir = createButton("Salir", "/imagenes/salida.png");
         btnSalir.setOnAction(e -> salir());

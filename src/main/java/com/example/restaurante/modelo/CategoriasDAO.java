@@ -4,6 +4,7 @@ import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -72,5 +73,21 @@ public class CategoriasDAO {
             e.printStackTrace();
         }
         return listCat;
+    }
+
+    public CategoriasDAO getById(int idCategoria) {
+        //String nombreCategoria = "";
+        CategoriasDAO cat = new CategoriasDAO();
+        String query = "SELECT nom_categoria FROM categorias WHERE id_categoria = " + idCategoria;
+        try {
+            Statement stmt = Conexion.conexion.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            if (res.next()) {
+                cat.setNom_Categoria(res.getString("nom_categoria"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cat;
     }
 }

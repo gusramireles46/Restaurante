@@ -1,7 +1,7 @@
 .root {
     -fx-background-image: url("../imagenes/background.jpg");
     -fx-background-repeat: no-repeat;
-    -fx-background-size: cover; /* Opcional, ajusta el tamaño de la imagen de fondo */
+    -fx-background-size: cover;
 }
 
 .texto-boton {

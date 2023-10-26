@@ -46,36 +46,53 @@ public class ProductosDAO {
         this.id_categoria = id_categoria;
     }
 
-    public void insertarProducto() throws SQLException {
+    public void insertarProducto() {
         String query = "INSERT INTO productos (nombre, precio, id_categoria) VALUES ('" + nombre + "', " + precio + ", " + id_categoria + ")";
-        Statement stmt = Conexion.conexion.createStatement();
-        stmt.executeUpdate(query);
+        try {
+            Statement stmt = Conexion.conexion.createStatement();
+            stmt.executeUpdate(query);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void actualizarProducto() throws SQLException {
+    public void actualizarProducto() {
         String query = "UPDATE productos SET nombre = '" + nombre + "', precio = " + precio + ", id_categoria = " + id_categoria + " WHERE id_producto = " + id_producto;
-        Statement stmt = Conexion.conexion.createStatement();
-        stmt.executeUpdate(query);
+        try {
+            Statement stmt = Conexion.conexion.createStatement();
+            stmt.executeUpdate(query);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void eliminarProducto() throws SQLException {
+    public void eliminarProducto() {
         String query = "DELETE FROM productos WHERE id_producto = " + id_producto;
-        Statement stmt = Conexion.conexion.createStatement();
-        stmt.executeUpdate(query);
+        try {
+            Statement stmt = Conexion.conexion.createStatement();
+            stmt.executeUpdate(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public ObservableList<ProductosDAO> listarProductos() throws SQLException {
+    public ObservableList<ProductosDAO> listarProductos() {
         ObservableList<ProductosDAO> listaProductos = FXCollections.observableArrayList();
         ProductosDAO productosDAO = null;
         String query = "SELECT * FROM productos";
-        Statement stmt = Conexion.conexion.createStatement();
-        ResultSet res = stmt.executeQuery(query);
-        while (res.next()) {
-            productosDAO = new ProductosDAO();
-            productosDAO.setId_producto(res.getInt("id_producto"));
-            productosDAO.setNombre(res.getString("nombre"));
-            productosDAO.setPrecio(res.getDouble("precio"));
-            listaProductos.add(productosDAO);
+        try {
+            Statement stmt = Conexion.conexion.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while (res.next()) {
+                productosDAO = new ProductosDAO();
+                productosDAO.setId_producto(res.getInt("id_producto"));
+                productosDAO.setNombre(res.getString("nombre"));
+                productosDAO.setPrecio(res.getDouble("precio"));
+                productosDAO.setId_categoria(res.getInt("id_categoria"));
+                listaProductos.add(productosDAO);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return listaProductos;
     }
