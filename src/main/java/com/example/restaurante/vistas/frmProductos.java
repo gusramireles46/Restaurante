@@ -16,6 +16,7 @@ public class frmProductos extends Stage {
     private ComboBox<CategoriasDAO> cbxCategoria;
     private Button btnGuardar;
     private ProductosDAO productosDAO;
+    private CategoriasDAO categoriasDAO;
     private TableView<ProductosDAO> tbvProductos;
 
     public frmProductos(TableView<ProductosDAO> tbvProd, ProductosDAO objProd) {
@@ -39,12 +40,12 @@ public class frmProductos extends Stage {
         txfPrecio.setFocusTraversable(false);
 
         cbxCategoria = new ComboBox<>();
-        CategoriasDAO categoriasDAO = new CategoriasDAO();
+        categoriasDAO = new CategoriasDAO();
         categoriasDAO.setId_Categoria(productosDAO.getId_categoria());
         categoriasDAO.getById();
+        cbxCategoria.setValue(categoriasDAO);
         ObservableList<CategoriasDAO> categorias = new CategoriasDAO().listarCategorias();
         cbxCategoria.setItems(categorias);
-        cbxCategoria.setValue(categoriasDAO);
         if (!categorias.isEmpty()) {
             cbxCategoria.setValue(categorias.get(0));
         }
