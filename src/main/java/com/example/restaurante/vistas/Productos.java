@@ -19,7 +19,7 @@ public class Productos extends Stage {
 
     private void crearGUI() {
         ProductosDAO productosDAO = new ProductosDAO();
-        ObservableList<ProductosDAO> listaProductos = productosDAO.listarProductos();
+        ObservableList<ProductosDAO> listaProductos = productosDAO.listarProductos(1);
 
         gdpPrincipal = new GridPane();
         gdpPrincipal.setHgap(10);

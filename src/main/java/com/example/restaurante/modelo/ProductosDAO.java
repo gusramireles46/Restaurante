@@ -96,4 +96,25 @@ public class ProductosDAO {
         }
         return listaProductos;
     }
+
+    public ObservableList<ProductosDAO> listarProductos(int id_cat) {
+        ObservableList<ProductosDAO> listaProductos = FXCollections.observableArrayList();
+        ProductosDAO productosDAO = null;
+        String query = "SELECT * FROM productos WHERE id_categoria = " + id_cat;
+        try {
+            Statement stmt = Conexion.conexion.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while (res.next()) {
+                productosDAO = new ProductosDAO();
+                productosDAO.setId_producto(res.getInt("id_producto"));
+                productosDAO.setNombre(res.getString("nombre"));
+                productosDAO.setPrecio(res.getDouble("precio"));
+                productosDAO.setId_categoria(res.getInt("id_categoria"));
+                listaProductos.add(productosDAO);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listaProductos;
+    }
 }
