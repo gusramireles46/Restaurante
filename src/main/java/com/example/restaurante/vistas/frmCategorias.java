@@ -26,7 +26,6 @@ public class frmCategorias extends Stage {
         this.show();
     }
     private void CrearUI(){
-        objCatDAO = new CategoriasDAO();
         txtNameCat = new TextField();
         txtNameCat.setText(objCatDAO.getNom_Categoria());
         txtNameCat.setPromptText("Nombre de la Categoria");
@@ -42,7 +41,6 @@ public class frmCategorias extends Stage {
             objCatDAO.actualizar();
         else
             objCatDAO.insertar();
-        objCatDAO.insertar();
         tbvCategorias.setItems(objCatDAO.listarCategorias());
         tbvCategorias.refresh();
         this.close();

@@ -20,11 +20,11 @@ public class CategoriasButton extends TableCell <CategoriasDAO, String> {
     }
 
     private void accionBoton(){
-        tbvCategorias = CategoriasButton.this.getTableView();
-        objCat = tbvCategorias.getItems().get(CategoriasButton.this.getIndex());
-        if(this.opc == 1){
+        tbvCategorias = this.getTableView();
+        objCat = tbvCategorias.getItems().get(this.getIndex());
+        if(this.opc == 1) {
             new frmCategorias(tbvCategorias, objCat);
-        }else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Tópicos Avazados de Programación");
             alert.setHeaderText("Confirmación del Sistema");

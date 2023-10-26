@@ -1,6 +1,7 @@
 package com.example.restaurante;
 
 import com.example.restaurante.modelo.Conexion;
+import com.example.restaurante.vistas.CRUDCategorias;
 import com.example.restaurante.vistas.CRUDProductos;
 import com.example.restaurante.vistas.Productos;
 import javafx.application.Application;
@@ -57,6 +58,7 @@ public class Restaurante extends Application {
 
         btnGestionCategorias = createButton("Gestionar Categorías", "/imagenes/gestionCategorias.png");
         btnGestionCategorias.setPrefWidth(250);
+        btnGestionCategorias.setOnAction(e -> new CRUDCategorias());
 
         btnGestionProductos = createButton("Gestionar Productos", "/imagenes/gestionProductos.png");
         btnGestionProductos.setPrefWidth(250);
