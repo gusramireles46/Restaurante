@@ -6,8 +6,16 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 public class frmProductos extends Stage {
     private Scene escena;
@@ -18,6 +26,8 @@ public class frmProductos extends Stage {
     private ProductosDAO productosDAO;
     private CategoriasDAO categoriasDAO;
     private TableView<ProductosDAO> tbvProductos;
+    ImageView imageView = new ImageView();
+    private CheckBox chbActualizarImagen;
 
     public frmProductos(TableView<ProductosDAO> tbvProd, ProductosDAO objProd) {
         this.tbvProductos = tbvProd;
@@ -50,11 +60,32 @@ public class frmProductos extends Stage {
             cbxCategoria.setValue(categorias.get(0));
         }
 
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg"));
+        Button btnSeleccionarImagen = new Button("Seleccionar Imagen");
+        btnSeleccionarImagen.setOnAction(e -> {
+            File selectedFile = fileChooser.showOpenDialog(this);
+            if (selectedFile != null) {
+                try {
+                    byte[] imageBytes = Files.readAllBytes(selectedFile.toPath());
+                    productosDAO.setImagenBytes(imageBytes);
+                    Image image = new Image(new ByteArrayInputStream(imageBytes));
+                    imageView.setImage(image);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        imageView.setFitWidth(200);
+        imageView.setFitHeight(200);
+
+        chbActualizarImagen = new CheckBox("Actualizar imagen");
 
         btnGuardar = new Button("Guardar producto");
         btnGuardar.setOnAction(e -> guardarProducto());
 
-        vbox = new VBox(txfNombre, txfPrecio, cbxCategoria, btnGuardar);
+        vbox = new VBox(txfNombre, txfPrecio, cbxCategoria, btnSeleccionarImagen, chbActualizarImagen, imageView, btnGuardar);
         vbox.setSpacing(10);
         vbox.setPadding(new Insets(10));
     }
@@ -68,20 +99,37 @@ public class frmProductos extends Stage {
             CategoriasDAO catTemp = cbxCategoria.getValue();
             productosDAO.setId_categoria(catTemp.getId_Categoria());
 
-            if (productosDAO.getId_producto() > 0)
-                productosDAO.actualizarProducto();
-            else
+            if (productosDAO.getId_producto() > 0) {
+                if (chbActualizarImagen.isSelected()) {
+                    if (productosDAO.getImagenBytes() == null) {
+                        mostrarAlerta("Debe seleccionar una imagen.");
+                        return;
+                    }
+                    productosDAO.actualizarProducto();
+                } else {
+                    productosDAO.actualizarProductoSinImagen();
+                }
+            } else {
+                if (chbActualizarImagen.isSelected() && productosDAO.getImagenBytes() == null) {
+                    mostrarAlerta("Debe seleccionar una imagen.");
+                    return;
+                }
                 productosDAO.insertarProducto();
+            }
             tbvProductos.setItems(productosDAO.listarProductos());
             tbvProductos.refresh();
 
             this.close();
         } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Mensaje del sistema");
-            alert.setHeaderText("Error en los datos");
-            alert.setContentText("Por favor ingrese sólo valores válidos (Precio: #.##).");
-            alert.showAndWait();
+            mostrarAlerta("Por favor ingrese solo valores válidos (Precio: #.##).");
         }
+    }
+
+    private void mostrarAlerta(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Mensaje del sistema");
+        alert.setHeaderText("Error en los datos");
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }

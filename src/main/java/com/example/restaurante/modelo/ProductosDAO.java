@@ -2,7 +2,10 @@ package com.example.restaurante.modelo;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 
+import java.io.ByteArrayInputStream;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,6 +16,15 @@ public class ProductosDAO {
     String nombre;
     double precio;
     int id_categoria;
+    private byte[] imagenBytes;
+
+    public byte[] getImagenBytes() {
+        return imagenBytes;
+    }
+
+    public void setImagenBytes(byte[] imagenBytes) {
+        this.imagenBytes = imagenBytes;
+    }
 
     public int getId_producto() {
         return id_producto;
@@ -47,31 +59,55 @@ public class ProductosDAO {
     }
 
     public void insertarProducto() {
-        String query = "INSERT INTO productos (nombre, precio, id_categoria) VALUES ('" + nombre + "', " + precio + ", " + id_categoria + ")";
+        String query = "INSERT INTO productos (nombre, precio, id_categoria, imagen_producto) VALUES (?, ?, ?, ?)";
         try {
-            Statement stmt = Conexion.conexion.createStatement();
-            stmt.executeUpdate(query);
-        } catch(Exception e) {
+            PreparedStatement stmt = Conexion.conexion.prepareStatement(query);
+            stmt.setString(1, nombre);
+            stmt.setDouble(2, precio);
+            stmt.setInt(3, id_categoria);
+            stmt.setBytes(4, imagenBytes);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void actualizarProducto() {
-        String query = "UPDATE productos SET nombre = '" + nombre + "', precio = " + precio + ", id_categoria = " + id_categoria + " WHERE id_producto = " + id_producto;
+        String query = "UPDATE productos SET nombre = ?, precio = ?, id_categoria = ?, imagen_producto = ? WHERE id_producto = ?";
         try {
-            Statement stmt = Conexion.conexion.createStatement();
-            stmt.executeUpdate(query);
-        } catch(Exception e) {
+            PreparedStatement stmt = Conexion.conexion.prepareStatement(query);
+            stmt.setString(1, nombre);
+            stmt.setDouble(2, precio);
+            stmt.setInt(3, id_categoria);
+            stmt.setBytes(4, imagenBytes);
+            stmt.setInt(5, id_producto);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void actualizarProductoSinImagen() {
+        String query = "UPDATE productos SET nombre = ?, precio = ?, id_categoria = ? WHERE id_producto = ?";
+        try {
+            PreparedStatement stmt = Conexion.conexion.prepareStatement(query);
+            stmt.setString(1, nombre);
+            stmt.setDouble(2, precio);
+            stmt.setInt(3, id_categoria);
+            stmt.setInt(4, id_producto);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void eliminarProducto() {
-        String query = "DELETE FROM productos WHERE id_producto = " + id_producto;
+        String query = "DELETE FROM productos WHERE id_producto = ?";
         try {
-            Statement stmt = Conexion.conexion.createStatement();
-            stmt.executeUpdate(query);
-        } catch (Exception e) {
+            PreparedStatement stmt = Conexion.conexion.prepareStatement(query);
+            stmt.setInt(1, id_producto);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -91,7 +127,7 @@ public class ProductosDAO {
                 productosDAO.setId_categoria(res.getInt("id_categoria"));
                 listaProductos.add(productosDAO);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return listaProductos;
@@ -100,21 +136,31 @@ public class ProductosDAO {
     public ObservableList<ProductosDAO> listarProductos(int id_cat) {
         ObservableList<ProductosDAO> listaProductos = FXCollections.observableArrayList();
         ProductosDAO productosDAO = null;
-        String query = "SELECT * FROM productos WHERE id_categoria = " + id_cat;
+        String query = "SELECT * FROM productos WHERE id_categoria = ?";
         try {
-            Statement stmt = Conexion.conexion.createStatement();
-            ResultSet res = stmt.executeQuery(query);
+            PreparedStatement stmt = Conexion.conexion.prepareStatement(query);
+            stmt.setInt(1, id_cat);
+            ResultSet res = stmt.executeQuery();
             while (res.next()) {
                 productosDAO = new ProductosDAO();
                 productosDAO.setId_producto(res.getInt("id_producto"));
                 productosDAO.setNombre(res.getString("nombre"));
                 productosDAO.setPrecio(res.getDouble("precio"));
                 productosDAO.setId_categoria(res.getInt("id_categoria"));
+                productosDAO.setImagenBytes(res.getBytes("imagen_producto"));
                 listaProductos.add(productosDAO);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return listaProductos;
+    }
+
+    public Image cargarImagenDesdeBytes() {
+        if (imagenBytes != null) {
+            ByteArrayInputStream stream = new ByteArrayInputStream(imagenBytes);
+            return new Image(stream);
+        }
+        return null;
     }
 }
