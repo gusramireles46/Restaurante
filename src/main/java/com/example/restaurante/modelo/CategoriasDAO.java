@@ -3,6 +3,8 @@ package com.example.restaurante.modelo;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,6 +13,15 @@ import java.util.List;
 public class CategoriasDAO {
     int id_categoria;
     String nom_categoria;
+    private byte[] imagenBytes;
+
+    public byte[] getImagenBytes() {
+        return imagenBytes;
+    }
+
+    public void setImagenBytes(byte[] imagenBytes) {
+        this.imagenBytes = imagenBytes;
+    }
 
     public void setId_Categoria(int id_categoria) {
         this.id_categoria = id_categoria;
@@ -31,14 +42,32 @@ public class CategoriasDAO {
 
     public void insertar(){
         try {
-            String query = "INSERT INTO categorias (nom_categoria) VALUES ('" + this.nom_categoria + "')";
-            Statement stmt = Conexion.conexion.createStatement();
-            stmt.executeUpdate(query);
+            String query = "INSERT INTO categorias (nom_categoria, imagen_categoria) VALUES ('" + this.nom_categoria + "', ?)";
+            //Statement stmt = Conexion.conexion.createStatement();
+            //stmt.executeUpdate(query);
+            PreparedStatement stmt = Conexion.conexion.prepareStatement(query);
+            stmt.setBytes(1, imagenBytes);
+            stmt.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
         }
     }
-    public void actualizar(){
+    public void actualizarCategoria(){
+        try{
+            String query = "UPDATE categorias SET nom_categoria = ?, imagen_categoria = ? WHERE id_categoria = ?";
+            //Statement stmt = Conexion.conexion.createStatement();
+            //stmt.executeUpdate(query);
+            PreparedStatement stmt = Conexion.conexion.prepareStatement(query);
+            stmt.setString(1, nom_categoria);
+            stmt.setBytes(2, imagenBytes);
+            stmt.setInt(3, id_categoria);
+            stmt.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void actualizarCategoriaSinImagen(){
         try{
             String query = "UPDATE categorias SET nom_categoria = '" + this.nom_categoria + "' " + "WHERE id_categoria = " + this.id_categoria;
             Statement stmt = Conexion.conexion.createStatement();
@@ -47,6 +76,7 @@ public class CategoriasDAO {
             e.printStackTrace();
         }
     }
+    
     public void eliminar(){
         try {
             String query = "DELETE FROM categorias WHERE id_categoria = " + this.id_categoria;
@@ -67,6 +97,26 @@ public class CategoriasDAO {
                 objC = new CategoriasDAO();
                 objC.setId_Categoria(res.getInt("id_categoria"));
                 objC.setNom_Categoria(res.getString("nom_categoria"));
+                listCat.add(objC);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return listCat;
+    }
+
+    public ObservableList<CategoriasDAO> listarCategoriasConImagen(){
+        ObservableList<CategoriasDAO>listCat = FXCollections.observableArrayList();
+        CategoriasDAO objC;
+        try {
+            String query = "SELECT * FROM categorias";
+            Statement stmt = Conexion.conexion.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while(res.next()){
+                objC = new CategoriasDAO();
+                objC.setId_Categoria(res.getInt("id_categoria"));
+                objC.setNom_Categoria(res.getString("nom_categoria"));
+                objC.setImagenBytes(res.getBytes("imagen_categoria"));
                 listCat.add(objC);
             }
         }catch (Exception e){
