@@ -8,6 +8,7 @@ CREATE TABLE categorias
 (
     id_categoria     int auto_increment,
     nom_categoria    varchar(40),
+    imagen_categoria mediumblob,
     constraint pk_cat primary key (id_categoria)
 );
 
@@ -19,10 +20,11 @@ CREATE TABLE clientes
 
 CREATE TABLE productos
 (
-    id_producto    int auto_increment,
+    id_producto     int auto_increment,
     nombre          text,
     precio          float,
     id_categoria    int,
+    imagen_producto mediumblob,
     CONSTRAINT pk_prod PRIMARY KEY (id_producto),
     CONSTRAINT fk_cat FOREIGN KEY (id_categoria) references categorias (id_categoria)
 );
