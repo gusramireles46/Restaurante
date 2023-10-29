@@ -29,6 +29,7 @@ public class Categorias extends Stage {
         for (int i = 0; i < listaCategorias.size(); i++) {
             CategoriasDAO categoria = listaCategorias.get(i);
             Button categoriaButton = new Button(categoria.getNom_Categoria());
+            categoriaButton.setOnAction(e -> new Productos(categoria.getId_Categoria()));
             gdpPrincipal.add(categoriaButton, columna, fila);
 
             columna ++;

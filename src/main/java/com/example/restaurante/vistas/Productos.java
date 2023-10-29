@@ -19,8 +19,10 @@ public class Productos extends Stage {
     private GridPane gdpPrincipal;
     private Scene escena;
     private VBox vProducto;
+    private int id_categoria;
 
-    public Productos() {
+    public Productos(int categoria) {
+        id_categoria = categoria;
         crearGUI();
         escena = new Scene(gdpPrincipal, 800, 600);
         escena.getStylesheets().add(getClass().getResource("/css/estilos_productos.css").toExternalForm());
@@ -30,7 +32,7 @@ public class Productos extends Stage {
 
     private void crearGUI() {
         ProductosDAO productosDAO = new ProductosDAO();
-        ObservableList<ProductosDAO> listaProductos = productosDAO.listarProductos(1);
+        ObservableList<ProductosDAO> listaProductos = productosDAO.listarProductos(id_categoria);
 
         gdpPrincipal = new GridPane();
         gdpPrincipal.setHgap(10);
