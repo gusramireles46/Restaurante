@@ -20,13 +20,16 @@ public class Productos extends Stage {
     private Scene escena;
     private VBox vProducto;
     private int id_categoria;
+    private String categoria;
 
-    public Productos(int categoria) {
-        id_categoria = categoria;
+    public Productos(int id, String nombre) {
+        id_categoria = id;
+        categoria = nombre;
         crearGUI();
         escena = new Scene(gdpPrincipal, 800, 600);
         escena.getStylesheets().add(getClass().getResource("/css/estilos_productos.css").toExternalForm());
         this.setScene(escena);
+        this.setTitle("Productos de la categoría: " + categoria);
         this.show();
     }
 

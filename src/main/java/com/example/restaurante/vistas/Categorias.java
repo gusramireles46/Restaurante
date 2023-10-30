@@ -2,6 +2,8 @@ package com.example.restaurante.vistas;
 
 import com.example.restaurante.modelo.CategoriasDAO;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -16,9 +18,12 @@ import java.io.ByteArrayInputStream;
 public class Categorias extends Stage {
     private GridPane gdpPrincipal;
     private Scene escena;
+    private VBox vCategorias;
+
     public Categorias() {
         crearGUI();
         this.setScene(escena);
+        escena.getStylesheets().add(getClass().getResource("/css/estilos_categorias.css").toExternalForm());
         this.show();
     }
 
@@ -29,6 +34,7 @@ public class Categorias extends Stage {
         gdpPrincipal = new GridPane();
         gdpPrincipal.setHgap(10);
         gdpPrincipal.setVgap(10);
+        gdpPrincipal.setPadding(new Insets(25));
 
         int columna = 0;
         int fila = 0;
@@ -45,10 +51,15 @@ public class Categorias extends Stage {
                 imageView.setFitHeight(150);
             }
 
+            Text txtCategoria = new Text(categoria.getNom_Categoria());
+            txtCategoria.getStyleClass().add("texto-boton");
+            vCategorias = new VBox(imageView, txtCategoria);
+            vCategorias.setAlignment(Pos.CENTER);
             Button categoriaButton = new Button();
-            categoriaButton.setGraphic(new VBox(imageView, new Text(categoria.getNom_Categoria())));
-            categoriaButton.setOnAction(e -> new Productos(categoria.getId_Categoria()));
+            categoriaButton.setGraphic(vCategorias);
+            categoriaButton.setOnAction(e -> new Productos(categoria.getId_Categoria(), categoria.getNom_Categoria()));
             gdpPrincipal.add(categoriaButton, columna, fila);
+
 
             columna++;
             if (columna == 4) {
