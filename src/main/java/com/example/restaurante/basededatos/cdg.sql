@@ -33,7 +33,7 @@ CREATE TABLE ticket
 (
     id_ticket      int auto_increment,
     id_cliente     int,
-    fecha_creacion datetime,
+    /*fecha_creacion datetime,*/
     total          decimal(10, 2),
     CONSTRAINT pk_ticket PRIMARY KEY (id_ticket),
     CONSTRAINT fk_cliente FOREIGN KEY (id_cliente) REFERENCES clientes (id_clientes)

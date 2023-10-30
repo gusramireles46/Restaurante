@@ -1,33 +1,47 @@
 package com.example.restaurante.modelo;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 public class TicketDAO {
-    private static TicketDAO instance = new TicketDAO();
-    private ObservableList<DetalleTicketDAO> detalles;
+    private int id_ticket;
+    private int id_cliente;
+    private double total;
 
-    private TicketDAO() {
-        detalles = FXCollections.observableArrayList();
+    public int getId_ticket() {
+        return id_ticket;
     }
 
-    public static TicketDAO getInstance() {
-        return instance;
+    public void setId_ticket(int id_ticket) {
+        this.id_ticket = id_ticket;
     }
 
-    public void agregarDetalle(DetalleTicketDAO detalle) {
-        detalles.add(detalle);
+    public int getId_cliente() {
+        return id_cliente;
     }
 
-    public void eliminarDetalle(DetalleTicketDAO detalle) {
-        detalles.remove(detalle);
+    public void setId_cliente(int id_cliente) {
+        this.id_cliente = id_cliente;
     }
 
-    public ObservableList<DetalleTicketDAO> getDetalles() {
-        return detalles;
+    public double getTotal() {
+        return total;
     }
 
-    public void limpiarTicket() {
-        detalles.clear();
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public void crearTicket() {
+
+    }
+
+    public void actualizarTicket() {
+
+    }
+
+    public void borrarTicket() {
+
+    }
+
+    public void mostrarTicket() {
+
     }
 }
