@@ -9,11 +9,13 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.ByteArrayInputStream;
 
@@ -21,6 +23,7 @@ public class Productos extends Stage {
     private GridPane gdpPrincipal;
     private Scene escena;
     private VBox vProducto;
+    private HBox hbox;
     private int id_categoria;
     private String categoria;
     private int id_ticket = Restaurante.id_ticket;
@@ -29,8 +32,10 @@ public class Productos extends Stage {
         id_categoria = id;
         categoria = nombre;
         crearGUI();
-        escena = new Scene(gdpPrincipal, 800, 600);
-        escena.getStylesheets().add(getClass().getResource("/css/estilos_productos.css").toExternalForm());
+        hbox = new HBox(gdpPrincipal);
+        hbox.setAlignment(Pos.CENTER);
+        escena = new Scene(hbox, 800, 600);
+        escena.getStylesheets().addAll(BootstrapFX.bootstrapFXStylesheet(), getClass().getResource("/css/estilos_productos.css").toExternalForm());
         this.setScene(escena);
         this.setTitle("Productos de la categoría: " + categoria);
         this.show();
@@ -66,6 +71,7 @@ public class Productos extends Stage {
             txtPrecio.getStyleClass().add("texto-boton");
 
             Button btnAgregar = new Button("Agregar al carrito");
+            btnAgregar.getStyleClass().addAll("btn", "btn-primary");
             //btnAgregar.setOnAction(e -> Restaurante.carritoCompras.agregarProducto(producto));
             btnAgregar.setOnAction(e -> {
                 DetalleTicketDAO detalleTicketDAO = new DetalleTicketDAO();

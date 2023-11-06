@@ -1,8 +1,6 @@
 package com.example.restaurante;
 
-import com.example.restaurante.modelo.CarritoCompras;
 import com.example.restaurante.modelo.Conexion;
-import com.example.restaurante.modelo.DetalleTicketDAO;
 import com.example.restaurante.modelo.TicketDAO;
 import com.example.restaurante.vistas.*;
 import javafx.application.Application;

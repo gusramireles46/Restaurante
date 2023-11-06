@@ -9,9 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.ByteArrayInputStream;
 
@@ -19,11 +21,12 @@ public class Categorias extends Stage {
     private GridPane gdpPrincipal;
     private Scene escena;
     private VBox vCategorias;
+    private HBox hbox;
 
     public Categorias() {
         crearGUI();
         this.setScene(escena);
-        escena.getStylesheets().add(getClass().getResource("/css/estilos_categorias.css").toExternalForm());
+        escena.getStylesheets().addAll(BootstrapFX.bootstrapFXStylesheet(), getClass().getResource("/css/estilos_categorias.css").toExternalForm());
         this.show();
     }
 
@@ -57,6 +60,7 @@ public class Categorias extends Stage {
             vCategorias.setAlignment(Pos.CENTER);
             Button categoriaButton = new Button();
             categoriaButton.setGraphic(vCategorias);
+            categoriaButton.getStyleClass().addAll("btn", "btn-default");
             categoriaButton.setOnAction(e -> new Productos(categoria.getId_Categoria(), categoria.getNom_Categoria()));
             gdpPrincipal.add(categoriaButton, columna, fila);
 
@@ -67,6 +71,8 @@ public class Categorias extends Stage {
                 fila++;
             }
         }
-        escena = new Scene(gdpPrincipal, 800, 600);
+        hbox = new HBox(gdpPrincipal);
+        hbox.setAlignment(Pos.CENTER);
+        escena = new Scene(hbox, 800, 600);
     }
 }
