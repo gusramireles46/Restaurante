@@ -14,6 +14,7 @@ public class TicketButton extends TableCell<DetalleTicketDAO, String> {
 
     public TicketButton() {
         btnEliminar = new Button("Eliminar");
+        btnEliminar.getStyleClass().addAll("btn", "btn-danger");
         btnEliminar.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Mensaje del sistema");

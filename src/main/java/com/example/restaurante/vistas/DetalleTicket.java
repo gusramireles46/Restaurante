@@ -30,7 +30,7 @@ public class DetalleTicket extends Stage {
         crearGUI();
         escena = new Scene(vbox, 640, 480);
         //escena.getStylesheets().addAll(/*BootstrapFX.bootstrapFXStylesheet(), */"/css/estilos_ticket.css");
-        escena.getStylesheets().add(getClass().getResource("/css/estilos_ticket.css").toExternalForm());
+        escena.getStylesheets().addAll(BootstrapFX.bootstrapFXStylesheet(), getClass().getResource("/css/estilos_ticket.css").toExternalForm());
         this.setTitle("Detalle del ticket " + Restaurante.id_ticket);
         this.setScene(escena);
         this.sizeToScene();
