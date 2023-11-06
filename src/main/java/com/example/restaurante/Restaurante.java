@@ -1,10 +1,10 @@
 package com.example.restaurante;
 
+import com.example.restaurante.modelo.CarritoCompras;
 import com.example.restaurante.modelo.Conexion;
-import com.example.restaurante.vistas.CRUDCategorias;
-import com.example.restaurante.vistas.CRUDProductos;
-import com.example.restaurante.vistas.Categorias;
-import com.example.restaurante.vistas.Productos;
+import com.example.restaurante.modelo.DetalleTicketDAO;
+import com.example.restaurante.modelo.TicketDAO;
+import com.example.restaurante.vistas.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -30,6 +30,10 @@ public class Restaurante extends Application {
     private BorderPane bdpPrincipal;
     private Button btnCategorias, btnSalir, btnGestionCategorias, btnGestionProductos;
     private Label lblNombre;
+    public static int id_ticket;
+    public static boolean finalizarOrden = true;
+
+    public static double total = 0;
 
     @Override
     public void start(Stage stage) {
@@ -54,9 +58,19 @@ public class Restaurante extends Application {
 
 
         bdpPrincipal.setTop(lblNombre);
+        TicketDAO ticket = new TicketDAO();
 
-        btnCategorias = createButton("Categorías", "/imagenes/categoria.png");
-        btnCategorias.setOnAction(e -> new Categorias());
+        /*btnCategorias = createButton("Categorías", "/imagenes/categoria.png");*/
+        btnCategorias = createButton("Crear nueva orden", "/imagenes/categoria.png");
+        btnCategorias.setOnAction(e -> {
+            if (finalizarOrden) {
+                ticket.crearTicket();
+                finalizarOrden = false;
+            }
+            id_ticket = ticket.getId_ticket();
+            //System.out.println(id_ticket);
+            new Categorias();
+        });
 
         btnGestionCategorias = createButton("Gestionar Categorías", "/imagenes/gestionCategorias.png");
         btnGestionCategorias.setPrefWidth(250);
@@ -70,10 +84,17 @@ public class Restaurante extends Application {
         btnSalir.setOnAction(e -> salir());
         btnSalir.setPrefWidth(250);
 
-        //Button btnProductos = new Button("Productos");
-        //btnProductos.setOnAction(e -> new Productos());
+        Button btnTicket = createButton("Ver ticket", "/imagenes/ticket.png");
+        btnTicket.setOnAction(e -> {
+            if (finalizarOrden) {
+                mostrarAlerta();
+            } else {
+                new DetalleTicket();
+            }
+        });
 
-        hbox = new HBox(btnCategorias);
+
+        hbox = new HBox(btnCategorias, btnTicket);
         hbox.setAlignment(Pos.CENTER);
         hbox.setSpacing(50);
 
@@ -87,6 +108,14 @@ public class Restaurante extends Application {
 
         bdpPrincipal.setCenter(vbox);
         bdpPrincipal.setPadding(new Insets(10));
+    }
+
+    private void mostrarAlerta() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Mensaje del sistema");
+        alert.setHeaderText("No hay una orden activa");
+        alert.setContentText("Debes crear una orden para poder continuar");
+        alert.showAndWait();
     }
 
     private void salir() {

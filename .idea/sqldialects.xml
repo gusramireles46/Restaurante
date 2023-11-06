@@ -3,6 +3,8 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/restaurante/basededatos/cdg.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/restaurante/modelo/CategoriasDAO.java" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/example/restaurante/modelo/DetalleTicketDAO.java" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/restaurante/modelo/ProductosDAO.java" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/example/restaurante/modelo/TicketDAO.java" dialect="MariaDB" />
   </component>
 </project>

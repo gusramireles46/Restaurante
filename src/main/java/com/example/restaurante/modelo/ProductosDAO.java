@@ -156,6 +156,21 @@ public class ProductosDAO {
         return listaProductos;
     }
 
+    public ProductosDAO getById(int id_prod) {
+        ProductosDAO prod = new ProductosDAO();
+        String sql = "SELECT nombre FROM productos WHERE id_producto = " + id_prod;
+        try {
+            PreparedStatement stmt = Conexion.conexion.prepareStatement(sql);
+            ResultSet res = stmt.executeQuery();
+            if (res.next()) {
+                prod.setNombre(res.getString("nombre"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return prod;
+    }
+
     public Image cargarImagenDesdeBytes() {
         if (imagenBytes != null) {
             ByteArrayInputStream stream = new ByteArrayInputStream(imagenBytes);

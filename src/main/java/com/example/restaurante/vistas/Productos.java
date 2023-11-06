@@ -1,5 +1,7 @@
 package com.example.restaurante.vistas;
 
+import com.example.restaurante.Restaurante;
+import com.example.restaurante.modelo.DetalleTicketDAO;
 import com.example.restaurante.modelo.ProductosDAO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,6 +23,7 @@ public class Productos extends Stage {
     private VBox vProducto;
     private int id_categoria;
     private String categoria;
+    private int id_ticket = Restaurante.id_ticket;
 
     public Productos(int id, String nombre) {
         id_categoria = id;
@@ -62,7 +65,14 @@ public class Productos extends Stage {
             txtProducto.getStyleClass().add("texto-boton");
             txtPrecio.getStyleClass().add("texto-boton");
 
-            vProducto = new VBox(imageView, txtProducto, txtPrecio);
+            Button btnAgregar = new Button("Agregar al carrito");
+            //btnAgregar.setOnAction(e -> Restaurante.carritoCompras.agregarProducto(producto));
+            btnAgregar.setOnAction(e -> {
+                DetalleTicketDAO detalleTicketDAO = new DetalleTicketDAO();
+                detalleTicketDAO.crearDetalleTicket(id_ticket, producto.getId_producto(), producto.getPrecio());
+            });
+
+            vProducto = new VBox(imageView, txtProducto, txtPrecio, btnAgregar);
             vProducto.setAlignment(Pos.CENTER);
 
             Button btnProducto = new Button();
