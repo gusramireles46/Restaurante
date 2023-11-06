@@ -1,9 +1,6 @@
 package com.example.restaurante.modelo;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class TicketDAO {
     private int id_ticket;
@@ -26,11 +23,12 @@ public class TicketDAO {
     }
 
     public void crearTicket() {
-        String sql = "INSERT INTO ticket (total) VALUES (?)";
+        String sql = "INSERT INTO ticket (fecha_creacion, total) VALUES (?, ?)";
         try {
             Conexion.createConnection();
             PreparedStatement sentencia = Conexion.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            sentencia.setDouble(1, total);
+            sentencia.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            sentencia.setDouble(2, total);
             sentencia.executeUpdate();
 
             ResultSet generatedKeys = sentencia.getGeneratedKeys();
