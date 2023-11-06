@@ -1,6 +1,7 @@
 package com.example.restaurante.vistas;
 
 import com.example.restaurante.Restaurante;
+import com.example.restaurante.componentes.TicketButton;
 import com.example.restaurante.modelo.DetalleTicketDAO;
 import com.example.restaurante.modelo.ProductosDAO;
 import com.example.restaurante.modelo.TicketDAO;
@@ -8,13 +9,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.kordamp.bootstrapfx.BootstrapFX;
 
 public class DetalleTicket extends Stage {
@@ -36,6 +35,11 @@ public class DetalleTicket extends Stage {
         this.setScene(escena);
         this.sizeToScene();
         this.show();
+    }
+
+    public void actualizarTotal() {
+        double total = detalleTicketDAO.obtenerTotal(Restaurante.id_ticket);
+        lblTotal.setText("TOTAL: $" + total);
     }
 
     private void crearGUI() {
@@ -67,6 +71,12 @@ public class DetalleTicket extends Stage {
         TableColumn<DetalleTicketDAO, Double> tbcPrecio = new TableColumn<>("Precio");
         tbcPrecio.setCellValueFactory(new PropertyValueFactory<>("precio_unitario"));
         TableColumn<DetalleTicketDAO, String> tbcEliminar = new TableColumn<>("Eliminar");
+        tbcEliminar.setCellFactory(new Callback<TableColumn<DetalleTicketDAO, String>, TableCell<DetalleTicketDAO, String>>() {
+            @Override
+            public TableCell<DetalleTicketDAO, String> call(TableColumn<DetalleTicketDAO, String> detalleTicketDAOStringTableColumn) {
+                return new TicketButton();
+            }
+        });
         tbvTicket.getColumns().addAll(tbcProducto, tbcPrecio, tbcEliminar);
         tbvTicket.setItems(detalleTicketDAO.mostrarDetalles(Restaurante.id_ticket));
     }

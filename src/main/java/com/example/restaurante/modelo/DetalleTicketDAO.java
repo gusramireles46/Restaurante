@@ -122,4 +122,14 @@ public class DetalleTicketDAO {
         }
         return det;
     }
+
+    public void eliminarProducto() {
+        String sql = "DELETE FROM detalle_ticket WHERE id_detalle = " + id_detalle;
+        try {
+            PreparedStatement stmt = Conexion.conexion.prepareStatement(sql);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
