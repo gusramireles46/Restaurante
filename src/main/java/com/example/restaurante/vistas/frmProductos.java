@@ -95,7 +95,20 @@ public class frmProductos extends Stage {
     private void guardarProducto() {
         try {
             productosDAO.setNombre(txfNombre.getText());
-            double precio = Double.parseDouble(txfPrecio.getText());
+            String precioStr = txfPrecio.getText();
+
+            if (precioStr.isEmpty()) {
+                mostrarAlerta("El precio no puede estar vacío.");
+                return;
+            }
+
+            double precio = Double.parseDouble(precioStr);
+
+            if (precio <= 0) {
+                mostrarAlerta("El precio debe ser mayor que cero.");
+                return;
+            }
+
             productosDAO.setPrecio(precio);
 
             CategoriasDAO catTemp = cbxCategoria.getValue();
@@ -126,6 +139,7 @@ public class frmProductos extends Stage {
             mostrarAlerta("Por favor ingrese solo valores válidos (Precio: #.##).");
         }
     }
+
 
     private void mostrarAlerta(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
