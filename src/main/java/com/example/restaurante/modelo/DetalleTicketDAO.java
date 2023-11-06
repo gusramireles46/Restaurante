@@ -14,7 +14,7 @@ public class DetalleTicketDAO {
     private int id_ticket;
     private int id_producto;
     private double precio_unitario;
-    private int total;
+    private double total;
 
     public int getId_detalle() {
         return id_detalle;
@@ -48,11 +48,11 @@ public class DetalleTicketDAO {
         this.precio_unitario = precio_unitario;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
-    public int getTotal() {
+    public double getTotal() {
         return total;
     }
 
@@ -93,7 +93,7 @@ public class DetalleTicketDAO {
             PreparedStatement sentencia = Conexion.conexion.prepareStatement(sql);
             ResultSet res = sentencia.executeQuery();
             while (res.next()) {
-                total = res.getInt("total");
+                total = res.getDouble("total");
                 Restaurante.total = total;
             }
         } catch (Exception e) {

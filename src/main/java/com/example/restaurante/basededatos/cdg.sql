@@ -16,7 +16,7 @@ CREATE TABLE productos
 (
     id_producto     int auto_increment,
     nombre          text,
-    precio          float,
+    precio          decimal(10, 2),
     id_categoria    int,
     imagen_producto mediumblob,
     CONSTRAINT pk_prod PRIMARY KEY (id_producto),

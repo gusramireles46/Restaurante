@@ -56,6 +56,7 @@ public class DetalleTicket extends Stage {
             }
             TicketDAO ticketDAO = new TicketDAO();
             ticketDAO.actualizarTicket(Restaurante.id_ticket, detalleTicketDAO.obtenerTotal(Restaurante.id_ticket));
+            mostrarAlerta();
             this.close();
         });
         lblTotal = new Label("TOTAL: $" + detalleTicketDAO.obtenerTotal(Restaurante.id_ticket));
@@ -64,6 +65,14 @@ public class DetalleTicket extends Stage {
         vbox.setSpacing(10);
         vbox.setPadding(new Insets(10));
         vbox.setAlignment(Pos.CENTER);
+    }
+
+    private void mostrarAlerta() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Mensaje del sistema");
+        alert.setHeaderText("Orden finalizada");
+        alert.setContentText("Se ha finalizado la orden con éxito");
+        alert.showAndWait();
     }
 
     private void crearTabla() {
