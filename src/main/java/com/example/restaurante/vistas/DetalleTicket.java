@@ -49,7 +49,7 @@ public class DetalleTicket extends Stage {
         lblTitle = new Label("Detalle del ticket " + Restaurante.id_ticket);
         lblTitle.getStyleClass().add("titulo");
         btnFinalizarOrden = new Button("Finalizar orden");
-        btnFinalizarOrden.getStyleClass().add("btnFinalizar");
+        btnFinalizarOrden.getStyleClass().addAll("btn", "btn-success", "btnFinalizar");
         btnFinalizarOrden.setOnAction(e -> {
             if (!Restaurante.finalizarOrden) {
                 Restaurante.finalizarOrden = true;

@@ -1,6 +1,7 @@
 package com.example.restaurante.vistas;
 
 import com.example.restaurante.Restaurante;
+import com.example.restaurante.componentes.Toast;
 import com.example.restaurante.modelo.DetalleTicketDAO;
 import com.example.restaurante.modelo.ProductosDAO;
 import javafx.geometry.Insets;
@@ -40,9 +41,10 @@ public class Productos extends Stage {
         bdpMain = new BorderPane();
         bdpMain.setCenter(hbox);
 
-        Button btnSalir = new Button("Salir");
+        Button btnSalir = new Button("X");
         btnSalir.setOnAction(e -> this.close());
-        btnSalir.getStyleClass().addAll("btn", "btn-warning");
+        btnSalir.getStyleClass().addAll("btn", "btn-danger");
+        btnSalir.setStyle("-fx-font-weight: bold; -fx-font-size: 18px");
         btnSalir.setPrefHeight(50);
         btnSalir.setPrefWidth(100);
 
@@ -95,7 +97,10 @@ public class Productos extends Stage {
             btnAgregar.setOnAction(e -> {
                 DetalleTicketDAO detalleTicketDAO = new DetalleTicketDAO();
                 detalleTicketDAO.crearDetalleTicket(id_ticket, producto.getId_producto(), producto.getPrecio());
+
+                Toast.show(this, "Se ha agregado al carrito");
             });
+
 
             vProducto = new VBox(imageView, txtProducto, txtPrecio, btnAgregar);
             vProducto.setAlignment(Pos.CENTER);

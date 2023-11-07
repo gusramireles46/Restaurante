@@ -78,8 +78,10 @@ public class Categorias extends Stage {
         bdpMain = new BorderPane();
         bdpMain.setCenter(hbox);
 
-        Button btnSalir = new Button("Salir");
+        Button btnSalir = new Button("X");
         btnSalir.setOnAction(e -> this.close());
+        btnSalir.getStyleClass().addAll("btn", "btn-danger");
+        btnSalir.setStyle("-fx-font-weight: bold; -fx-font-size: 18px");
         btnSalir.setPrefHeight(50);
         btnSalir.setPrefWidth(100);
 
