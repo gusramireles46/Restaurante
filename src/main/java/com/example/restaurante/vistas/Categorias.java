@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,6 +23,7 @@ public class Categorias extends Stage {
     private Scene escena;
     private VBox vCategorias;
     private HBox hbox;
+    private BorderPane bdpMain;
 
     public Categorias() {
         crearGUI();
@@ -73,6 +75,21 @@ public class Categorias extends Stage {
         }
         hbox = new HBox(gdpPrincipal);
         hbox.setAlignment(Pos.CENTER);
-        escena = new Scene(hbox, 800, 600);
+        bdpMain = new BorderPane();
+        bdpMain.setCenter(hbox);
+
+        Button btnSalir = new Button("Salir");
+        btnSalir.setOnAction(e -> this.close());
+        btnSalir.setPrefHeight(50);
+        btnSalir.setPrefWidth(100);
+
+        HBox hSalir = new HBox(btnSalir);
+        hSalir.setAlignment(Pos.CENTER);
+        hSalir.setSpacing(10);
+        hSalir.setPadding(new Insets(10));
+
+        bdpMain.setBottom(hSalir);
+
+        escena = new Scene(bdpMain, 800, 600);
     }
 }

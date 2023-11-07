@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -26,6 +27,7 @@ public class Productos extends Stage {
     private HBox hbox;
     private int id_categoria;
     private String categoria;
+    private BorderPane bdpMain;
     private int id_ticket = Restaurante.id_ticket;
 
     public Productos(int id, String nombre) {
@@ -34,7 +36,24 @@ public class Productos extends Stage {
         crearGUI();
         hbox = new HBox(gdpPrincipal);
         hbox.setAlignment(Pos.CENTER);
-        escena = new Scene(hbox, 800, 600);
+
+        bdpMain = new BorderPane();
+        bdpMain.setCenter(hbox);
+
+        Button btnSalir = new Button("Salir");
+        btnSalir.setOnAction(e -> this.close());
+        btnSalir.getStyleClass().addAll("btn", "btn-warning");
+        btnSalir.setPrefHeight(50);
+        btnSalir.setPrefWidth(100);
+
+        HBox hSalir = new HBox(btnSalir);
+        hSalir.setAlignment(Pos.CENTER);
+        hSalir.setSpacing(10);
+        hSalir.setPadding(new Insets(10));
+
+        bdpMain.setBottom(hSalir);
+
+        escena = new Scene(bdpMain, 800, 600);
         escena.getStylesheets().addAll(BootstrapFX.bootstrapFXStylesheet(), getClass().getResource("/css/estilos_productos.css").toExternalForm());
         this.setScene(escena);
         this.setTitle("Productos de la categoría: " + categoria);
