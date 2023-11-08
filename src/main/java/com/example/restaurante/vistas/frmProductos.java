@@ -94,7 +94,15 @@ public class frmProductos extends Stage {
 
     private void guardarProducto() {
         try {
-            productosDAO.setNombre(txfNombre.getText());
+            String nombre = txfNombre.getText();
+
+            if (nombre == null || nombre.isEmpty()) {
+                mostrarAlerta("El nombre del producto no puede estar vacío.");
+                return;
+            }
+
+            productosDAO.setNombre(nombre);
+
             String precioStr = txfPrecio.getText();
 
             if (precioStr.isEmpty()) {
@@ -139,6 +147,7 @@ public class frmProductos extends Stage {
             mostrarAlerta("Por favor ingrese solo valores válidos (Precio: #.##).");
         }
     }
+
 
 
     private void mostrarAlerta(String mensaje) {

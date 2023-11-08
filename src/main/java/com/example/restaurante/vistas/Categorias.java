@@ -44,6 +44,9 @@ public class Categorias extends Stage {
         int columna = 0;
         int fila = 0;
 
+        double buttonWidth = 150;
+        double buttonHeight = 150;
+
         for (int i = 0; i < listaCategorias.size(); i++) {
             CategoriasDAO categoria = listaCategorias.get(i);
 
@@ -52,20 +55,34 @@ public class Categorias extends Stage {
             byte[] imagenBytes = categoria.getImagenBytes();
             if (imagenBytes != null) {
                 imageView = new ImageView(new Image(new ByteArrayInputStream(imagenBytes)));
-                imageView.setFitWidth(150);
-                imageView.setFitHeight(150);
+                imageView.setFitWidth(125);
+                imageView.setFitHeight(125);
             }
 
             Text txtCategoria = new Text(categoria.getNom_Categoria());
             txtCategoria.getStyleClass().add("texto-boton");
-            vCategorias = new VBox(imageView, txtCategoria);
+            vCategorias = new VBox();
             vCategorias.setAlignment(Pos.CENTER);
-            Button categoriaButton = new Button();
-            categoriaButton.setGraphic(vCategorias);
-            categoriaButton.getStyleClass().addAll("btn", "btn-default");
-            categoriaButton.setOnAction(e -> new Productos(categoria.getId_Categoria(), categoria.getNom_Categoria()));
-            gdpPrincipal.add(categoriaButton, columna, fila);
 
+            if (imageView != null) {
+                vCategorias.getChildren().addAll(imageView, txtCategoria);
+            } else {
+                vCategorias.getChildren().add(txtCategoria);
+            }
+
+            Button categoriaButton = new Button();
+            categoriaButton.getStyleClass().addAll("btn", "btn-default");
+            categoriaButton.setPrefWidth(175);
+            categoriaButton.setPrefHeight(175);
+            categoriaButton.setOnAction(e -> new Productos(categoria.getId_Categoria(), categoria.getNom_Categoria()));
+
+            if (imageView != null) {
+                categoriaButton.setGraphic(vCategorias);
+            } else {
+                categoriaButton.setText(categoria.getNom_Categoria());
+            }
+
+            gdpPrincipal.add(categoriaButton, columna, fila);
 
             columna++;
             if (columna == 4) {
@@ -73,6 +90,7 @@ public class Categorias extends Stage {
                 fila++;
             }
         }
+
         hbox = new HBox(gdpPrincipal);
         hbox.setAlignment(Pos.CENTER);
         bdpMain = new BorderPane();

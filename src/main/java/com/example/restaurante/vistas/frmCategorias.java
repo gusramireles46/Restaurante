@@ -73,7 +73,14 @@ public class frmCategorias extends Stage {
     }
 
     private void guardarCategoria() {
-        objCatDAO.setNom_Categoria(txtNameCat.getText());
+        String nombreCategoria = txtNameCat.getText();
+
+        if (nombreCategoria == null || nombreCategoria.isEmpty()) {
+            mostrarAlerta("El nombre de la categoría no puede estar vacío.");
+            return;
+        }
+
+        objCatDAO.setNom_Categoria(nombreCategoria);
 
         if (chbActualizarImagen.isSelected() && objCatDAO.getImagenBytes() == null) {
             mostrarAlerta("Debe seleccionar una imagen.");
@@ -95,6 +102,7 @@ public class frmCategorias extends Stage {
 
         this.close();
     }
+
 
     private void mostrarAlerta(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

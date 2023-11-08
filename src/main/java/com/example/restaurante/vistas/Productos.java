@@ -6,6 +6,7 @@ import com.example.restaurante.modelo.DetalleTicketDAO;
 import com.example.restaurante.modelo.ProductosDAO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,7 +15,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.collections.ObservableList;
-import javafx.scene.Scene;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
@@ -30,6 +30,8 @@ public class Productos extends Stage {
     private String categoria;
     private BorderPane bdpMain;
     private int id_ticket = Restaurante.id_ticket;
+    private double buttonWidth = 150; // Tamaño prefijado para los botones
+    private double buttonHeight = 200; // Tamaño prefijado para los botones
 
     public Productos(int id, String nombre) {
         id_categoria = id;
@@ -82,8 +84,8 @@ public class Productos extends Stage {
             byte[] imagenBytes = producto.getImagenBytes();
             if (imagenBytes != null) {
                 imageView = new ImageView(new Image(new ByteArrayInputStream(imagenBytes)));
-                imageView.setFitWidth(150);
-                imageView.setFitHeight(150);
+                imageView.setFitWidth(125);
+                imageView.setFitHeight(125);
             }
 
             Text txtProducto = new Text(producto.getNombre());
@@ -93,7 +95,6 @@ public class Productos extends Stage {
 
             Button btnAgregar = new Button("Agregar al carrito");
             btnAgregar.getStyleClass().addAll("btn", "btn-primary");
-            //btnAgregar.setOnAction(e -> Restaurante.carritoCompras.agregarProducto(producto));
             btnAgregar.setOnAction(e -> {
                 DetalleTicketDAO detalleTicketDAO = new DetalleTicketDAO();
                 detalleTicketDAO.crearDetalleTicket(id_ticket, producto.getId_producto(), producto.getPrecio());
@@ -102,11 +103,19 @@ public class Productos extends Stage {
             });
 
 
-            vProducto = new VBox(imageView, txtProducto, txtPrecio, btnAgregar);
+            vProducto = new VBox();
             vProducto.setAlignment(Pos.CENTER);
+
+            if (imageView != null) {
+                vProducto.getChildren().addAll(imageView, txtProducto, txtPrecio, btnAgregar);
+            } else {
+                vProducto.getChildren().addAll(txtProducto, txtPrecio, btnAgregar);
+            }
 
             Button btnProducto = new Button();
             btnProducto.setGraphic(vProducto);
+            btnProducto.setPrefWidth(175);
+            btnProducto.setPrefHeight(175);
 
             gdpPrincipal.add(btnProducto, columna, fila);
 
