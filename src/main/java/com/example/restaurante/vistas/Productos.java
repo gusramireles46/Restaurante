@@ -99,8 +99,17 @@ public class Productos extends Stage {
                 DetalleTicketDAO detalleTicketDAO = new DetalleTicketDAO();
                 detalleTicketDAO.crearDetalleTicket(id_ticket, producto.getId_producto(), producto.getPrecio());
 
-                Toast.show(this, "Se ha agregado al carrito");
+
+                double toastWidth = 300;
+                double toastHeight = 100;
+
+                double toastX = this.getX() + (this.getWidth() - toastWidth) / 2;
+                double toastY = this.getY() + (this.getHeight() - toastHeight) / 2;
+
+                Toast.show(this, "Se ha agregado al carrito", toastX, toastY);
             });
+
+
 
 
             vProducto = new VBox();

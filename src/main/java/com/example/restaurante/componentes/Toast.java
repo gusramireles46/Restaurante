@@ -14,7 +14,7 @@ import javafx.util.Duration;
 
 public class Toast {
 
-    public static void show(Stage ownerStage, String message) {
+    public static void show(Stage ownerStage, String message, double x, double y) {
         Stage toastStage = new Stage();
         toastStage.initOwner(ownerStage);
         toastStage.setResizable(false);
@@ -39,8 +39,8 @@ public class Toast {
             toastStage.setHeight(newValue.getHeight() + 20);
         });
 
-        toastStage.setX(ownerStage.getX() + ownerStage.getWidth() / 2 - toastStage.getWidth() / 2);
-        toastStage.setY(ownerStage.getY() + ownerStage.getHeight() / 1.5 - toastStage.getHeight() / 2);
+        toastStage.setX(x);
+        toastStage.setY(y);
 
         toastStage.show();
 
