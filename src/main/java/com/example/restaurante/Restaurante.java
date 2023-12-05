@@ -67,7 +67,7 @@ public class Restaurante extends Application {
             }
             id_ticket = ticket.getId_ticket();
             //System.out.println(id_ticket);
-            new Categorias();
+            new Principal();
         });
 
         btnGestionCategorias = createButton("Gestionar Categorías", "/imagenes/gestionCategorias.png");
