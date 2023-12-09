@@ -61,7 +61,7 @@ public class frmProductos extends Stage {
         }
 
         FileChooser fileChooser = new FileChooser();
-        String homeUsuario =System.getProperty("user.home");
+        String homeUsuario =System.getProperty("user.home") + File.separator + "Documents" + File.separator + "Restaurante";
         fileChooser.setInitialDirectory(new File(homeUsuario));
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg"));
         Button btnSeleccionarImagen = new Button("Seleccionar Imagen");

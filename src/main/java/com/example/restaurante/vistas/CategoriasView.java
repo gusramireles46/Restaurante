@@ -1,10 +1,10 @@
 package com.example.restaurante.vistas;
 
+import com.example.restaurante.componentes.CategoriaClickListener;
 import com.example.restaurante.modelo.CategoriasDAO;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,15 +13,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.ByteArrayInputStream;
 
 public class CategoriasView extends BorderPane {
 
+    private CategoriaClickListener categoriaClickListener;
     private GridPane gdpPrincipal;
-    private VBox vCategorias;
-    private HBox hbox;
-    private BorderPane bdpMain;
+
+    public void setOnCategoriaClicked(CategoriaClickListener listener) {
+        this.categoriaClickListener = listener;
+    }
 
     public CategoriasView() {
         crearGUI();
@@ -36,17 +39,10 @@ public class CategoriasView extends BorderPane {
         gdpPrincipal.setVgap(10);
         gdpPrincipal.setPadding(new Insets(25));
 
-        vCategorias = new VBox();  // Mover la inicialización fuera del bucle
-
         int columna = 0;
         int fila = 0;
 
-        double buttonWidth = 150;
-        double buttonHeight = 150;
-
-        for (int i = 0; i < listaCategorias.size(); i++) {
-            CategoriasDAO categoria = listaCategorias.get(i);
-
+        for (CategoriasDAO categoria : listaCategorias) {
             ImageView imageView = null;
 
             byte[] imagenBytes = categoria.getImagenBytes();
@@ -59,24 +55,28 @@ public class CategoriasView extends BorderPane {
             Text txtCategoria = new Text(categoria.getNom_Categoria());
             txtCategoria.getStyleClass().add("texto-boton");
 
-            if (imageView != null) {
-                vCategorias.getChildren().addAll(imageView, txtCategoria);
-            } else {
-                vCategorias.getChildren().add(txtCategoria);
-            }
-
             Button categoriaButton = new Button();
             categoriaButton.getStyleClass().addAll("btn", "btn-default");
             categoriaButton.setPrefWidth(175);
             categoriaButton.setPrefHeight(175);
-            categoriaButton.setOnAction(e -> new Productos(categoria.getId_Categoria(), categoria.getNom_Categoria()));
+            int idCat = categoria.getId_Categoria();
+            String nomCat = categoria.getNom_Categoria();
+            categoriaButton.setOnAction(e -> {
+                if (categoriaClickListener != null) {
+                    categoriaClickListener.onCategoriaClicked(idCat, nomCat);
+                }
+            });
+
+            VBox categoriaBox = new VBox();
+            categoriaBox.setAlignment(Pos.CENTER);
+            categoriaBox.setSpacing(5);
 
             if (imageView != null) {
-                categoriaButton.setGraphic(vCategorias);
-            } else {
-                categoriaButton.setText(categoria.getNom_Categoria());
+                categoriaBox.getChildren().add(imageView);
             }
 
+            categoriaBox.getChildren().add(txtCategoria);
+            categoriaButton.setGraphic(categoriaBox);
             gdpPrincipal.add(categoriaButton, columna, fila);
 
             columna++;
@@ -86,10 +86,9 @@ public class CategoriasView extends BorderPane {
             }
         }
 
-        hbox = new HBox(gdpPrincipal);
-        hbox.setAlignment(Pos.CENTER);
-        bdpMain = new BorderPane();
-        bdpMain.setCenter(hbox);
-        this.setCenter(bdpMain);  // Agrega esto para que el BorderPane principal tenga el centro correctamente
+        this.setCenter(gdpPrincipal);
+        this.getStylesheets().addAll(BootstrapFX.bootstrapFXStylesheet(), getClass().getResource("/css/estilos_productos.css").toExternalForm());
     }
 }
+
+

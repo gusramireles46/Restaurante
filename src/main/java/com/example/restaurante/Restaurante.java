@@ -82,17 +82,15 @@ public class Restaurante extends Application {
         btnSalir.setOnAction(e -> salir());
         btnSalir.setPrefWidth(250);
 
-        Button btnTicket = createButton("Ver ticket", "/imagenes/ticket.png");
+        /*Button btnTicket = createButton("Ver ticket", "/imagenes/ticket.png");
         btnTicket.setOnAction(e -> {
             if (finalizarOrden) {
                 mostrarAlerta();
-            } else {
-                new DetalleTicket();
             }
-        });
+        });*/
 
 
-        hbox = new HBox(btnCategorias, btnTicket);
+        hbox = new HBox(btnCategorias);
         hbox.setAlignment(Pos.CENTER);
         hbox.setSpacing(50);
 

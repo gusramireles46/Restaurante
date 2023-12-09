@@ -2,7 +2,7 @@ package com.example.restaurante.componentes;
 
 import com.example.restaurante.Restaurante;
 import com.example.restaurante.modelo.DetalleTicketDAO;
-import com.example.restaurante.vistas.DetalleTicket;
+import com.example.restaurante.vistas.TicketView;
 import javafx.scene.control.*;
 
 import java.util.Optional;
@@ -11,8 +11,10 @@ public class TicketButton extends TableCell<DetalleTicketDAO, String> {
     private Button btnEliminar;
     private DetalleTicketDAO detalleTicketDAO;
     private TableView<DetalleTicketDAO> tbvTicket;
+    private TicketView ticketView;  // Agrega una referencia a TicketView
 
-    public TicketButton() {
+    public TicketButton(TicketView ticketView) {
+        this.ticketView = ticketView;  // Inicializa la referencia a TicketView
         btnEliminar = new Button("Eliminar");
         btnEliminar.getStyleClass().addAll("btn", "btn-danger");
         btnEliminar.setOnAction(e -> {
@@ -27,8 +29,8 @@ public class TicketButton extends TableCell<DetalleTicketDAO, String> {
                 detalleTicketDAO.eliminarProducto();
                 tbvTicket.setItems(detalleTicketDAO.mostrarDetalles(Restaurante.id_ticket));
                 tbvTicket.refresh();
-                DetalleTicket detalleTicket = (DetalleTicket) tbvTicket.getScene().getWindow();
-                detalleTicket.actualizarTotal();
+                // Ahora puedes llamar al método actualizarTotalDesdeBoton de TicketView
+                ticketView.actualizarTotalDesdeBoton();
             }
         });
     }
@@ -36,7 +38,10 @@ public class TicketButton extends TableCell<DetalleTicketDAO, String> {
     @Override
     protected void updateItem(String s, boolean b) {
         super.updateItem(s, b);
-        if(!b)
+        if (!b)
             this.setGraphic(btnEliminar);
     }
 }
+
+
+

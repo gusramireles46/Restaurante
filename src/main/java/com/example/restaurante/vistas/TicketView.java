@@ -1,4 +1,4 @@
-/*package com.example.restaurante.vistas;
+package com.example.restaurante.vistas;
 
 import com.example.restaurante.Restaurante;
 import com.example.restaurante.componentes.TicketButton;
@@ -6,8 +6,9 @@ import com.example.restaurante.modelo.DetalleTicketDAO;
 import com.example.restaurante.modelo.ProductosDAO;
 import com.example.restaurante.modelo.TicketDAO;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -16,25 +17,19 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.kordamp.bootstrapfx.BootstrapFX;
 
-public class DetalleTicket extends Stage {
-    private VBox vbox;
+public class TicketView extends VBox {
     private DetalleTicketDAO detalleTicketDAO;
-    private ProductosDAO productosDAO;
     private Label lblTitle, lblTotal;
     private TableView<DetalleTicketDAO> tbvTicket;
     private Button btnFinalizarOrden;
-    private Scene escena;
+    private ObservableList<DetalleTicketDAO> detallesTicketList;
 
-    // Constructor
-    public DetalleTicket() {
+    public TicketView() {
+        this.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+
+        detallesTicketList = FXCollections.observableArrayList();
+
         crearGUI();
-        escena = new Scene(vbox, 640, 480);
-        //escena.getStylesheets().addAll(BootstrapFX.bootstrapFXStylesheet(), "/css/estilos_ticket.css");
-        escena.getStylesheets().addAll(BootstrapFX.bootstrapFXStylesheet(), getClass().getResource("/css/estilos_ticket.css").toExternalForm());
-        this.setTitle("Detalle del ticket " + Restaurante.id_ticket);
-        this.setScene(escena);
-        this.sizeToScene();
-        this.show();
     }
 
     public void actualizarTotal() {
@@ -42,14 +37,22 @@ public class DetalleTicket extends Stage {
         lblTotal.setText("TOTAL: $" + total);
     }
 
+    public void actualizarTabla() {
+        detalleTicketDAO = new DetalleTicketDAO();
+        detallesTicketList.setAll(detalleTicketDAO.mostrarDetalles(Restaurante.id_ticket));
+        tbvTicket.setItems(FXCollections.observableArrayList(detallesTicketList));
+        actualizarTotal();
+    }
+
+
     private void crearGUI() {
         detalleTicketDAO = new DetalleTicketDAO();
         tbvTicket = new TableView<>();
         crearTabla();
         lblTitle = new Label("Detalle del ticket " + Restaurante.id_ticket);
-        lblTitle.getStyleClass().add("titulo");
+        lblTitle.getStyleClass().addAll("h1", "text-center");
         btnFinalizarOrden = new Button("Finalizar orden");
-        btnFinalizarOrden.getStyleClass().addAll("btn", "btn-success", "btnFinalizar");
+        btnFinalizarOrden.getStyleClass().addAll("btn", "btn-success");
         btnFinalizarOrden.setOnAction(e -> {
             if (!Restaurante.finalizarOrden) {
                 Restaurante.finalizarOrden = true;
@@ -57,14 +60,17 @@ public class DetalleTicket extends Stage {
             TicketDAO ticketDAO = new TicketDAO();
             ticketDAO.actualizarTicket(Restaurante.id_ticket, detalleTicketDAO.obtenerTotal(Restaurante.id_ticket));
             mostrarAlerta();
-            this.close();
+            Stage stage = (Stage) btnFinalizarOrden.getScene().getWindow();
+            stage.close();
         });
+
         lblTotal = new Label("TOTAL: $" + detalleTicketDAO.obtenerTotal(Restaurante.id_ticket));
-        lblTotal.getStyleClass().add("total");
-        vbox = new VBox(lblTitle, tbvTicket, lblTotal, btnFinalizarOrden);
-        vbox.setSpacing(10);
-        vbox.setPadding(new Insets(10));
-        vbox.setAlignment(Pos.CENTER);
+        lblTotal.getStyleClass().add("h3");
+        this.getChildren().addAll(lblTitle, tbvTicket, lblTotal, btnFinalizarOrden);
+        this.setSpacing(10);
+        this.setPadding(new Insets(10));
+
+        actualizarTabla();
     }
 
     private void mostrarAlerta() {
@@ -83,21 +89,38 @@ public class DetalleTicket extends Stage {
         tbcEliminar.setCellFactory(new Callback<TableColumn<DetalleTicketDAO, String>, TableCell<DetalleTicketDAO, String>>() {
             @Override
             public TableCell<DetalleTicketDAO, String> call(TableColumn<DetalleTicketDAO, String> detalleTicketDAOStringTableColumn) {
-                return new TicketButton();
+                return new TicketButton(TicketView.this);
             }
         });
+
+        tbcProducto.setPrefWidth(200);
+        tbcPrecio.setPrefWidth(100);
+        tbcEliminar.setPrefWidth(100);
+
         tbvTicket.getColumns().addAll(tbcProducto, tbcPrecio, tbcEliminar);
-        tbvTicket.setItems(detalleTicketDAO.mostrarDetalles(Restaurante.id_ticket));
+
+        tbvTicket.setMaxWidth(400);
+        tbvTicket.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tbvTicket.getColumns().forEach(column -> {
+            column.setMaxWidth(Double.MAX_VALUE * 0.5);
+        });
+        tbvTicket.setPrefHeight(700);
+        tbvTicket.autosize();
     }
 
     private TableColumn<DetalleTicketDAO, String> nombreProducto() {
         TableColumn<DetalleTicketDAO, String> tbcNombreProducto = new TableColumn<>("Producto");
         tbcNombreProducto.setCellValueFactory(cellData -> {
-            productosDAO = new ProductosDAO();
+            ProductosDAO productosDAO = new ProductosDAO();
             int id_producto = cellData.getValue().getId_producto();
             ProductosDAO producto = productosDAO.getById(id_producto);
             return new SimpleStringProperty(producto.getNombre());
         });
         return tbcNombreProducto;
     }
-}*/
+
+    public void actualizarTotalDesdeBoton() {
+        double total = detalleTicketDAO.obtenerTotal(Restaurante.id_ticket);
+        lblTotal.setText("TOTAL: $" + total);
+    }
+}
