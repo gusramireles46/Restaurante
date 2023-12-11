@@ -45,10 +45,7 @@ public class frmCategorias extends Stage {
         FileChooser fileChooser = new FileChooser();
         String homeUsuario = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "Restaurante";
         File initialDirectory = new File(homeUsuario);
-
-// Check if the specified folder exists
         if (!initialDirectory.exists() || !initialDirectory.isDirectory()) {
-            // If it doesn't exist, use the "Documents" directory
             initialDirectory = new File(System.getProperty("user.home") + File.separator + "Documents");
         }
 

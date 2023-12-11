@@ -40,7 +40,7 @@ public class CategoriasDAO {
     }
 
 
-    public void insertar(){
+    public void insertar() {
         try {
             String query = "INSERT INTO categorias (nom_categoria, imagen_categoria) VALUES ('" + this.nom_categoria + "', ?)";
             //Statement stmt = Conexion.conexion.createStatement();
@@ -48,12 +48,13 @@ public class CategoriasDAO {
             PreparedStatement stmt = Conexion.conexion.prepareStatement(query);
             stmt.setBytes(1, imagenBytes);
             stmt.executeUpdate();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void actualizarCategoria(){
-        try{
+
+    public void actualizarCategoria() {
+        try {
             String query = "UPDATE categorias SET nom_categoria = ?, imagen_categoria = ? WHERE id_categoria = ?";
             //Statement stmt = Conexion.conexion.createStatement();
             //stmt.executeUpdate(query);
@@ -62,64 +63,95 @@ public class CategoriasDAO {
             stmt.setBytes(2, imagenBytes);
             stmt.setInt(3, id_categoria);
             stmt.executeUpdate();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void actualizarCategoriaSinImagen(){
-        try{
+    public void actualizarCategoriaSinImagen() {
+        try {
             String query = "UPDATE categorias SET nom_categoria = '" + this.nom_categoria + "' " + "WHERE id_categoria = " + this.id_categoria;
             Statement stmt = Conexion.conexion.createStatement();
             stmt.executeUpdate(query);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    public void eliminar(){
+
+    public void eliminar() {
+        if (tieneProductosAsociados()) {
+            eliminarProductosDeCategoria();
+        }
+
         try {
             String query = "DELETE FROM categorias WHERE id_categoria = " + this.id_categoria;
             Statement stmt = Conexion.conexion.createStatement();
             stmt.executeUpdate(query);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public ObservableList<CategoriasDAO> listarCategorias(){
-        ObservableList<CategoriasDAO>listCat = FXCollections.observableArrayList();
+
+    private void eliminarProductosDeCategoria() {
+        try {
+            String query = "DELETE FROM productos WHERE id_categoria = " + this.id_categoria;
+            Statement stmt = Conexion.conexion.createStatement();
+            stmt.executeUpdate(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean tieneProductosAsociados() {
+        try {
+            String query = "SELECT COUNT(*) AS count FROM productos WHERE id_categoria = " + this.id_categoria;
+            Statement stmt = Conexion.conexion.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            if (res.next()) {
+                int count = res.getInt("count");
+                return count > 0;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public ObservableList<CategoriasDAO> listarCategorias() {
+        ObservableList<CategoriasDAO> listCat = FXCollections.observableArrayList();
         CategoriasDAO objC;
         try {
             String query = "SELECT * FROM categorias";
             Statement stmt = Conexion.conexion.createStatement();
             ResultSet res = stmt.executeQuery(query);
-            while(res.next()){
+            while (res.next()) {
                 objC = new CategoriasDAO();
                 objC.setId_Categoria(res.getInt("id_categoria"));
                 objC.setNom_Categoria(res.getString("nom_categoria"));
                 listCat.add(objC);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return listCat;
     }
 
-    public ObservableList<CategoriasDAO> listarCategoriasConImagen(){
-        ObservableList<CategoriasDAO>listCat = FXCollections.observableArrayList();
+    public ObservableList<CategoriasDAO> listarCategoriasConImagen() {
+        ObservableList<CategoriasDAO> listCat = FXCollections.observableArrayList();
         CategoriasDAO objC;
         try {
             String query = "SELECT * FROM categorias";
             Statement stmt = Conexion.conexion.createStatement();
             ResultSet res = stmt.executeQuery(query);
-            while(res.next()){
+            while (res.next()) {
                 objC = new CategoriasDAO();
                 objC.setId_Categoria(res.getInt("id_categoria"));
                 objC.setNom_Categoria(res.getString("nom_categoria"));
                 objC.setImagenBytes(res.getBytes("imagen_categoria"));
                 listCat.add(objC);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return listCat;

@@ -56,14 +56,30 @@ public class frmProductos extends Stage {
         cbxCategoria.setValue(categoriasDAO);
         ObservableList<CategoriasDAO> categorias = new CategoriasDAO().listarCategorias();
         cbxCategoria.setItems(categorias);
-        if (!categorias.isEmpty()) {
-            cbxCategoria.setValue(categorias.get(0));
+
+// Check if the product has an associated category
+        if (productosDAO.getId_categoria() > 0) {
+            // Find the category with the matching ID and set it as the initial value
+            CategoriasDAO selectedCategory = categorias.stream().filter(category -> category.getId_Categoria() == productosDAO.getId_categoria()).findFirst().orElse(null);
+            cbxCategoria.setValue(selectedCategory);
+        } else {
+            // If the product doesn't have an associated category, set the default value
+            if (!categorias.isEmpty()) {
+                cbxCategoria.setValue(categorias.get(0));
+            }
         }
 
+
         FileChooser fileChooser = new FileChooser();
-        String homeUsuario =System.getProperty("user.home") + File.separator + "Documents" + File.separator + "Restaurante";
-        fileChooser.setInitialDirectory(new File(homeUsuario));
+        String homeUsuario = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "Restaurante";
+        File initialDirectory = new File(homeUsuario);
+        if (!initialDirectory.exists() || !initialDirectory.isDirectory()) {
+            initialDirectory = new File(System.getProperty("user.home") + File.separator + "Documents");
+        }
+
+        fileChooser.setInitialDirectory(initialDirectory);
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg"));
+
         Button btnSeleccionarImagen = new Button("Seleccionar Imagen");
         btnSeleccionarImagen.setOnAction(e -> {
             File selectedFile = fileChooser.showOpenDialog(this);
@@ -147,7 +163,6 @@ public class frmProductos extends Stage {
             mostrarAlerta("Por favor ingrese solo valores válidos (Precio: #.##).");
         }
     }
-
 
 
     private void mostrarAlerta(String mensaje) {
