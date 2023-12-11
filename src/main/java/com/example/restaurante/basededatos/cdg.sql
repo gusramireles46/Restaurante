@@ -38,6 +38,5 @@ CREATE TABLE detalle_ticket
     id_producto     int,
     precio_unitario decimal(10, 2),
     CONSTRAINT pk_detalle PRIMARY KEY (id_detalle),
-    CONSTRAINT fk_ticket FOREIGN KEY (id_ticket) REFERENCES ticket (id_ticket),
-    CONSTRAINT fk_prod FOREIGN KEY (id_producto) REFERENCES productos (id_producto)
+    CONSTRAINT fk_ticket FOREIGN KEY (id_ticket) REFERENCES ticket (id_ticket)
 );

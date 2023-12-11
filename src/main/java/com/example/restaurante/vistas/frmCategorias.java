@@ -43,9 +43,18 @@ public class frmCategorias extends Stage {
         txtNameCat.setFocusTraversable(false);
 
         FileChooser fileChooser = new FileChooser();
-        String homeUsuario =System.getProperty("user.home") + File.separator + "Documents" + File.separator + "Restaurante";
-        fileChooser.setInitialDirectory(new File(homeUsuario));
+        String homeUsuario = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "Restaurante";
+        File initialDirectory = new File(homeUsuario);
+
+// Check if the specified folder exists
+        if (!initialDirectory.exists() || !initialDirectory.isDirectory()) {
+            // If it doesn't exist, use the "Documents" directory
+            initialDirectory = new File(System.getProperty("user.home") + File.separator + "Documents");
+        }
+
+        fileChooser.setInitialDirectory(initialDirectory);
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg"));
+
         Button btnSeleccionarImagen = new Button("Seleccionar Imagen");
         btnSeleccionarImagen.setOnAction(e -> {
             File selectedFile = fileChooser.showOpenDialog(this);
@@ -60,6 +69,7 @@ public class frmCategorias extends Stage {
                 }
             }
         });
+
 
         imageView.setFitWidth(200);
         imageView.setFitHeight(200);
