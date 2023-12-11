@@ -1,6 +1,7 @@
 package com.example.restaurante.vistas;
 
 import com.example.restaurante.modelo.CategoriasDAO;
+import com.example.restaurante.modelo.Conexion;
 import com.example.restaurante.modelo.ProductosDAO;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -11,11 +12,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class frmProductos extends Stage {
     private Scene escena;
@@ -57,15 +62,31 @@ public class frmProductos extends Stage {
         ObservableList<CategoriasDAO> categorias = new CategoriasDAO().listarCategorias();
         cbxCategoria.setItems(categorias);
 
-// Check if the product has an associated category
         if (productosDAO.getId_categoria() > 0) {
-            // Find the category with the matching ID and set it as the initial value
-            CategoriasDAO selectedCategory = categorias.stream().filter(category -> category.getId_Categoria() == productosDAO.getId_categoria()).findFirst().orElse(null);
-            cbxCategoria.setValue(selectedCategory);
+            CategoriasDAO categoriaSeleccionada = categorias.stream().filter(category -> category.getId_Categoria() == productosDAO.getId_categoria()).findFirst().orElse(null);
+
+            if (categoriaSeleccionada != null) {
+                cbxCategoria.setValue(categoriaSeleccionada);
+            } else {
+                mostrarAlerta("La categoría seleccionada es nula. Por favor, selecciona una categoría válida.");
+            }
         } else {
-            // If the product doesn't have an associated category, set the default value
-            if (!categorias.isEmpty()) {
-                cbxCategoria.setValue(categorias.get(0));
+            cbxCategoria.setConverter(new StringConverter<CategoriasDAO>() {
+                @Override
+                public String toString(CategoriasDAO categoriasDAO) {
+                    if (categoriasDAO.getId_Categoria() != 0)
+                        return categoriasDAO.toString();
+                    else
+                        return "Seleccionar categoria";
+                }
+
+                @Override
+                public CategoriasDAO fromString(String s) {
+                    return null;
+                }
+            });
+            if (categorias.isEmpty()) {
+                mostrarAlerta("No hay categorías disponibles. Por favor, selecciona una categoría.");
             }
         }
 
@@ -132,11 +153,15 @@ public class frmProductos extends Stage {
                 mostrarAlerta("El precio debe ser mayor que cero.");
                 return;
             }
-
-            productosDAO.setPrecio(precio);
-
             CategoriasDAO catTemp = cbxCategoria.getValue();
             productosDAO.setId_categoria(catTemp.getId_Categoria());
+
+            if (!categoriaExiste(productosDAO.getId_categoria())) {
+                mostrarAlerta("La categoría seleccionada no existe.");
+                return;
+            }
+
+            productosDAO.setPrecio(precio);
 
             if (productosDAO.getId_producto() > 0) {
                 if (chbActualizarImagen.isSelected()) {
@@ -162,6 +187,21 @@ public class frmProductos extends Stage {
         } catch (NumberFormatException e) {
             mostrarAlerta("Por favor ingrese solo valores válidos (Precio: #.##).");
         }
+    }
+
+    private boolean categoriaExiste(int idCategoria) {
+        String query = "SELECT COUNT(*) FROM categorias WHERE id_categoria = " + idCategoria;
+        try {
+            Statement stmt = Conexion.conexion.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            if (res.next()) {
+                int count = res.getInt(1);
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 
